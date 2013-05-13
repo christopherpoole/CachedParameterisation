@@ -38,6 +38,9 @@
 #include "G4VisAttributes.hh"
 #include "G4UIcommand.hh"
 
+// CachedParameterisation //
+#include "CachedParameterisation.hh"
+
 
 DetectorConstruction::DetectorConstruction(G4String filename)
 {
@@ -61,6 +64,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
+
+    CachedParameterisation* param = new CachedParameterisation();
 
     return world_physical;
 }
