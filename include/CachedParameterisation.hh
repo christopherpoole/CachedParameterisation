@@ -4,7 +4,7 @@
 // High fidelity parameterised geometry in GEANT4 described by data
 //
 // Author:  Christopher M Poole <mail@christopherpoole.net>
-// Source:  http://github.com/christopherpoole/G4VoxelData
+// Source:  http://github.com/christopherpoole/CachedParameterisation
 //
 // License & Copyright
 // ===================
