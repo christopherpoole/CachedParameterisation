@@ -40,3 +40,5 @@ class CachedParameterisation {
       ~CachedParameterisation() {};
 };
 
+#endif // CACHEDPARAMETERISATOIN_H
+
