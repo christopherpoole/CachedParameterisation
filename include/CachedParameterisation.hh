@@ -34,10 +34,23 @@
 #include "G4VPVParameterisation.hh"
 #include "globals.hh"
 
+// G4VoxelData //
+#include "G4VoxelData.hh"
+#include "G4VoxelArray.hh"
+#include "HDF5MappedIO.hh"
+
 
 class CachedParameterisation : public G4VPVParameterisation{
   public:
-    CachedParameterisation() {};
+    CachedParameterisation(G4String filename)
+    {
+        transform = new HDF5MappedIO<int>();
+        transform->Read(filename, "transform");
+
+        this->do_transform = true;
+        this->do_dimensions = false;
+    };
+
     ~CachedParameterisation() {};
 
   public:
@@ -52,7 +65,13 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4Material* ComputeMaterial(G4VPhysicalVolume *physical_volume,
             const G4int copy_number, const G4VTouchable *parent_touchable) {
     };
- 
+  
+  private:
+    G4bool do_transform;
+    G4bool do_dimensions;
+
+    // Cached data files stored by copy number // 
+    HDF5MappedIO<int>* transform;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H
