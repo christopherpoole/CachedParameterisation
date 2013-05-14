@@ -65,7 +65,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
 
-    CachedParameterisation* param = new CachedParameterisation();
+    CachedParameterisation* param = new CachedParameterisation(this->filename);
 
     return world_physical;
 }
