@@ -58,9 +58,9 @@ class CachedParameterisation : public G4VPVParameterisation{
     void ComputeTransformation (const G4int copy_number,
             G4VPhysicalVolume* physical_volume) const
     {
-        G4int x = transform->GetValue(0, copy_number);
-        G4int y = transform->GetValue(0, copy_number);
-        G4int z = transform->GetValue(0, copy_number);
+        G4int x = transform->GetValue(0, copy_number)*cm;
+        G4int y = transform->GetValue(1, copy_number)*cm;
+        G4int z = transform->GetValue(2, copy_number)*cm;
 
         G4ThreeVector origin = G4ThreeVector(x, y, z);
         physical_volume->SetTranslation(origin);
