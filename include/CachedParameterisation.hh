@@ -42,8 +42,16 @@ class CachedParameterisation : public G4VPVParameterisation{
 
   public:
     using G4VPVParameterisation::ComputeTransformation;
+    void ComputeTransformation (const G4int copy_number,
+            G4VPhysicalVolume* physical_volume) const {
+    };
+ 
     using G4VPVParameterisation::ComputeDimensions;
+
     using G4VPVParameterisation::ComputeMaterial;
+    G4Material* ComputeMaterial(G4VPhysicalVolume *physical_volume,
+            const G4int copy_number, const G4VTouchable *parent_touchable) {
+    };
  
 };
 
