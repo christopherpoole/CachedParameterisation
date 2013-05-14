@@ -69,13 +69,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     CachedParameterisation* param = new CachedParameterisation(this->filename);
 
-    G4int sphere_count = 10;
     G4Orb* sphere_solid = new G4Orb("sphere", 10*mm);
     G4LogicalVolume* sphere_logical =
         new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
 
     new G4PVParameterised("CachedParam", sphere_logical, world_logical, kUndefined,
-            sphere_count, param, false); // checking overlaps 
+            param->GetSize(), param, false); // checking overlaps 
 
     return world_physical;
 }
