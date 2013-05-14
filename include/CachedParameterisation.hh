@@ -47,11 +47,17 @@ class CachedParameterisation : public G4VPVParameterisation{
         transform = new HDF5MappedIO<int>();
         transform->Read(filename, "transform");
 
+        this->size = transform->GetShape()[1];
+
         this->do_transform = true;
         this->do_dimensions = false;
     };
 
     ~CachedParameterisation() {};
+
+    G4int GetSize() {
+        return this->size;
+    };
 
   public:
     using G4VPVParameterisation::ComputeTransformation;
@@ -74,6 +80,8 @@ class CachedParameterisation : public G4VPVParameterisation{
     };
   
   private:
+    G4int size;
+
     G4bool do_transform;
     G4bool do_dimensions;
 
