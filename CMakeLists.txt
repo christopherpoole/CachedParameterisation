@@ -16,7 +16,6 @@ project(CACHEDPARAMETERISATION)
 find_package(Geant4 REQUIRED ui_all vis_all)
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/../../include)
 
 # G4VoxelData
 find_package(G4VoxelData)
@@ -25,7 +24,7 @@ find_package(G4VoxelData)
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh ${PROJECT_SOURCE_DIR}/../../include)
 
-add_executable(BasicCachedParam BasicCachedParam.cc ${sources} ${headers})
+add_executable(CachedParam CachedParam.cc ${sources} ${headers})
 
-target_link_libraries(BasicCachedParam ${Geant4_LIBRARIES})
-target_link_libraries(BasicCachedParam ${G4VOXELDATA_HDF5_LIBRARIES})
+target_link_libraries(CachedParam ${Geant4_LIBRARIES})
+target_link_libraries(CachedParam ${G4VOXELDATA_HDF5_LIBRARIES})

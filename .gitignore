@@ -2,3 +2,4 @@
 *.so
 *.hdf5
 massif*
+build/*
