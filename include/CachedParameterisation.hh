@@ -47,7 +47,7 @@ class CachedParameterisation : public G4VPVParameterisation{
         transform = new HDF5MappedIO<int>();
         transform->Read(filename, "transform");
 
-        this->size = transform->GetShape()[1];
+        this->size = transform->GetShape()[0];
 
         this->do_transform = true;
         this->do_dimensions = false;
@@ -64,9 +64,9 @@ class CachedParameterisation : public G4VPVParameterisation{
     void ComputeTransformation (const G4int copy_number,
             G4VPhysicalVolume* physical_volume) const
     {
-        G4int x = transform->GetValue(0, copy_number)*cm;
-        G4int y = transform->GetValue(1, copy_number)*cm;
-        G4int z = transform->GetValue(2, copy_number)*cm;
+        G4int x = transform->GetValue(copy_number, 0)*cm;
+        G4int y = transform->GetValue(copy_number, 1)*cm;
+        G4int z = transform->GetValue(copy_number, 2)*cm;
 
         G4ThreeVector origin = G4ThreeVector(x, y, z);
         physical_volume->SetTranslation(origin);
