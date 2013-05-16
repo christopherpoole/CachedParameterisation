@@ -44,7 +44,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
     particle_gun = new G4ParticleGun();
 
     G4ParticleTable* particle_table = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition* particle = particle_table->FindParticle("e-");
+    G4ParticleDefinition* particle = particle_table->FindParticle("geantino");
   
     particle_gun->SetParticleDefinition(particle);
     particle_gun->SetParticlePosition(G4ThreeVector());
