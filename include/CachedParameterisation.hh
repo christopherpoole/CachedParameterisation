@@ -38,7 +38,7 @@
 // G4VoxelData //
 #include "G4VoxelData.hh"
 #include "G4VoxelArray.hh"
-#include "HDF5MappedIO.hh"
+//#include "HDF5MappedIO.hh"
 
 
 class CachedParameterisation : public G4VPVParameterisation{
