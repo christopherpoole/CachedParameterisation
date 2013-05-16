@@ -33,6 +33,7 @@
 // GEANT4 //
 #include "G4VPVParameterisation.hh"
 #include "globals.hh"
+#include "Randomize.hh"
 
 // G4VoxelData //
 #include "G4VoxelData.hh"
@@ -44,10 +45,10 @@ class CachedParameterisation : public G4VPVParameterisation{
   public:
     CachedParameterisation(G4String filename)
     {
-        transform = new HDF5MappedIO<int>();
-        transform->Read(filename, "transform");
+        //transform = new HDF5MappedIO<int>();
+        //transform->Read(filename, "transform");
 
-        this->size = transform->GetShape()[0];
+        //this->size = transform->GetShape()[0];
 
         this->do_transform = true;
         this->do_dimensions = false;
@@ -64,9 +65,13 @@ class CachedParameterisation : public G4VPVParameterisation{
     void ComputeTransformation (const G4int copy_number,
             G4VPhysicalVolume* physical_volume) const
     {
-        G4int x = transform->GetValue(copy_number, 0)*cm;
-        G4int y = transform->GetValue(copy_number, 1)*cm;
-        G4int z = transform->GetValue(copy_number, 2)*cm;
+        //G4int x = transform->GetValue(copy_number, 0)*cm;
+        //G4int y = transform->GetValue(copy_number, 1)*cm;
+        //G4int z = transform->GetValue(copy_number, 2)*cm;
+
+        G4int x = G4UniformRand()*2000;
+        G4int y = G4UniformRand()*2000;
+        G4int z = G4UniformRand()*2000;
 
         G4ThreeVector origin = G4ThreeVector(x, y, z);
         physical_volume->SetTranslation(origin);
@@ -86,7 +91,7 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4bool do_dimensions;
 
     // Cached data files stored by copy number // 
-    HDF5MappedIO<int>* transform;
+    //HDF5MappedIO<int>* transform;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H

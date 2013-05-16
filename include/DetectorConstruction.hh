@@ -44,7 +44,7 @@
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction(G4String filename);
+    DetectorConstruction(G4int count, G4double smartless);
     ~DetectorConstruction();
 
     G4VPhysicalVolume* Construct();
@@ -54,7 +54,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume* world_logical;
     G4VPhysicalVolume* world_physical;
    
-    G4String filename;
+    G4int count;
+    G4double smartless;
 };
 #endif
 

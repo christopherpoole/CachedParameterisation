@@ -44,9 +44,10 @@
 #include "CachedParameterisation.hh"
 
 
-DetectorConstruction::DetectorConstruction(G4String filename)
+DetectorConstruction::DetectorConstruction(G4int count, G4double smartless)
 {
-    this->filename = filename;
+    this->count = count;
+    this->smartless = smartless;
 }
 
 
@@ -66,15 +67,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     world_logical->SetVisAttributes(G4VisAttributes::Invisible);
+    world_logical->SetSmartless(smartless);
 
-    CachedParameterisation* param = new CachedParameterisation(this->filename);
+    CachedParameterisation* param = new CachedParameterisation("");
 
-    G4Orb* sphere_solid = new G4Orb("sphere", 10*mm);
+    G4Orb* sphere_solid = new G4Orb("sphere", 1*mm);
     G4LogicalVolume* sphere_logical =
         new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
 
     new G4PVParameterised("CachedParam", sphere_logical, world_logical, kUndefined,
-            param->GetSize(), param, false); // checking overlaps 
+            count, param, false); // checking overlaps 
+            //param->GetSize(), param, false); // checking overlaps 
 
     return world_physical;
 }
