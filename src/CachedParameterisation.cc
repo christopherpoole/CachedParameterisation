@@ -54,6 +54,13 @@ CachedParameterisation::CachedParameterisation(G4String filename)
     rstar_tree = SpatialIndex::RTree::createNewRTree(
             *rstar_buffer, fill_factor, capacity, capacity, ndims, 
             SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
+
+    // for each replica
+    // rstar_tree->insertData(uint32_t len, const byte* pData,
+    //                        const IShape& shape, id_type shapeIdentifier);
+    // where shape = SpatialIndex::Region(point_low, point_high, ndim=3)
+    // point_low = [xmin, ymin, zmin], point_high = [xmax, ymax, zmax]
+    // len and pData can be 0 for null pointer, could store replica metadata
 }
 
 CachedParameterisation::~CachedParameterisation()
