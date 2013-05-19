@@ -28,3 +28,5 @@ add_executable(CachedParam CachedParam.cc ${sources} ${headers})
 
 target_link_libraries(CachedParam ${Geant4_LIBRARIES})
 target_link_libraries(CachedParam ${G4VOXELDATA_HDF5_LIBRARIES})
+target_link_libraries(CachedParam spatialindex)
+
