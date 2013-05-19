@@ -26,49 +26,46 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef CACHEDPARAMETERISATOIN_H
-#define CACHEDPARAMETERISATOIN_H
+// USER//
+#include "CachedParameterisation.hh"
 
 
-// GEANT4 //
-#include "G4VPVParameterisation.hh"
-#include "G4VPhysicalVolume.hh"
+CachedParameterisation::CachedParameterisation(G4String filename)
+{
+    //transform = new HDF5MappedIO<int>();
+    //transform->Read(filename, "transform");
 
-#include "globals.hh"
-#include "Randomize.hh"
+    //this->size = transform->GetShape()[0];
 
-// G4VoxelData //
-#include "G4VoxelData.hh"
-#include "G4VoxelArray.hh"
-//#include "HDF5MappedIO.hh"
+    this->do_transform = true;
+    this->do_dimensions = false;
+}
 
+CachedParameterisation::~CachedParameterisation()
+{
+}
 
-class CachedParameterisation : public G4VPVParameterisation{
-  public:
-    CachedParameterisation(G4String filename);
-    ~CachedParameterisation();
+G4int CachedParameterisation::GetSize()
+{
+    return this->size;
+}
 
-  public:
-    G4int GetSize();
-    
-    using G4VPVParameterisation::ComputeTransformation;
-    void ComputeTransformation (const G4int copy_number,
-            G4VPhysicalVolume* physical_volume) const;
- 
-    using G4VPVParameterisation::ComputeDimensions;
+void CachedParameterisation::ComputeTransformation(const G4int copy_number,
+        G4VPhysicalVolume* physical_volume) const
+{
+    //G4int x = transform->GetValue(copy_number, 0)*cm;
+    //G4int y = transform->GetValue(copy_number, 1)*cm;
+    //G4int z = transform->GetValue(copy_number, 2)*cm;
 
-    using G4VPVParameterisation::ComputeMaterial;
-    G4Material* ComputeMaterial(G4VPhysicalVolume *physical_volume,
-            const G4int copy_number, const G4VTouchable *parent_touchable);
-  
-  private:
-    G4int size;
+    G4int x = G4UniformRand()*2000;
+    G4int y = G4UniformRand()*2000;
+    G4int z = G4UniformRand()*2000;
 
-    G4bool do_transform;
-    G4bool do_dimensions;
+    G4ThreeVector origin = G4ThreeVector(x, y, z);
+    physical_volume->SetTranslation(origin);
+}
 
-    // Cached data files stored by copy number // 
-    //HDF5MappedIO<int>* transform;
-};
+G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,
+            const G4int copy_number, const G4VTouchable *parent_touchable) {
+}; 
 
-#endif // CACHEDPARAMETERISATOIN_H
