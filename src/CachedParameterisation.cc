@@ -39,6 +39,21 @@ CachedParameterisation::CachedParameterisation(G4String filename)
 
     this->do_transform = true;
     this->do_dimensions = false;
+
+    // Compute R* Tree
+    rstar_file = SpatialIndex::StorageManager::createNewDiskStorageManager(
+            filename, 4096);
+    rstar_buffer = SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(
+            *rstar_file, 10, false);
+
+    SpatialIndex::id_type indexIdentifier;
+    double fill_factor = 0.7;
+    int capacity = 100;
+    int ndims = 3;
+
+    rstar_tree = SpatialIndex::RTree::createNewRTree(
+            *rstar_buffer, fill_factor, capacity, capacity, ndims, 
+            SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
 }
 
 CachedParameterisation::~CachedParameterisation()

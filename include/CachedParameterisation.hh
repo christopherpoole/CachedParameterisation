@@ -40,7 +40,10 @@
 // G4VoxelData //
 #include "G4VoxelData.hh"
 #include "G4VoxelArray.hh"
-//#include "HDF5MappedIO.hh"
+#include "HDF5MappedIO.hh"
+
+// SpatialIndex //
+#include "spatialindex/SpatialIndex.h"
 
 
 class CachedParameterisation : public G4VPVParameterisation{
@@ -68,7 +71,12 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4bool do_dimensions;
 
     // Cached data files stored by copy number // 
-    //HDF5MappedIO<int>* transform;
+    HDF5MappedIO<int>* transform;
+
+    // SpatialIndex R* Tree //
+    SpatialIndex::IStorageManager* rstar_file;
+    SpatialIndex::StorageManager::IBuffer* rstar_buffer;
+    SpatialIndex::ISpatialIndex* rstar_tree;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H
