@@ -1,5 +1,8 @@
 *.swp
 *.so
 *.hdf5
+*.dat
+*.idx
+
 massif*
 build/*
