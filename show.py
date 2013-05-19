@@ -29,6 +29,7 @@ for i, s in enumerate(smartless):
         marker='.', label="smartless = %i" % s)
 
 pylab.legend(loc='lower right')
+pylab.title("Resident memory (--), smartvoxel memory (- -) versus solid count.")
 pylab.xlabel("$n$ parameterisations")
 pylab.ylabel("Memory ($bytes$)")
 
