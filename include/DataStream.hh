@@ -107,8 +107,11 @@ class DataStream: public SpatialIndex::IDataStream
         G4int z = transform->GetValue(copy_number, 2)*cm;
         low[2] = z - delta; high[2] = z + delta;
 
+        double data[4] = {x, y, z, 0.1}; // x, y, z, radius
+
         SpatialIndex::Region r(low, high, 3);
-        m_pNext = new SpatialIndex::RTree::Data(0, 0, r, copy_number);
+        m_pNext = new SpatialIndex::RTree::Data(
+                sizeof(double), reinterpret_cast<byte*>(data), r, copy_number);
 
         copy_number++;
 	}
