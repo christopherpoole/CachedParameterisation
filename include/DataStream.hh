@@ -129,5 +129,44 @@ class DataStream: public SpatialIndex::IDataStream
     G4int copy_number;    
 };
 
+
+class Visitor : public SpatialIndex::IVisitor {
+public:
+	size_t m_indexIO;
+	size_t m_leafIO;
+
+public:
+	Visitor() : m_indexIO(0), m_leafIO(0) {}
+
+	void visitNode(const SpatialIndex::INode& n)
+	{
+		if (n.isLeaf()) m_leafIO++;
+		else m_indexIO++;
+	}
+
+	void visitData(const SpatialIndex::IData& d)
+	{
+        SpatialIndex::IShape* pS;
+		d.getShape(&pS);
+		delete pS;
+
+		byte* pData = 0;
+		uint32_t cLen = 0;
+		d.getData(cLen, &pData);
+        
+        double* s = reinterpret_cast<double*>(pData); // x, y, z, radius
+		G4cout << s[0] << " " << s[1] << " " << s[2] << " " << s[3] << G4endl;
+		delete[] pData;
+
+		G4cout << "visit data: " << d.getIdentifier() << G4endl;
+	}
+
+	void visitData(std::vector<const SpatialIndex::IData*>& v)
+	{
+		G4cout << v[0]->getIdentifier() << " " << v[1]->getIdentifier() << G4endl;
+	}
+
+};
+
 #endif
 
