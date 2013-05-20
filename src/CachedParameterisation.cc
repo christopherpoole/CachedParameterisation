@@ -32,7 +32,6 @@
 
 CachedParameterisation::CachedParameterisation(G4String filename)
 {
-    //this->size = transform->GetShape()[0];
 
     this->do_transform = true;
     this->do_dimensions = false;
@@ -52,11 +51,17 @@ CachedParameterisation::CachedParameterisation(G4String filename)
     int ndims = 3;
 
     stream = new DataStream(filename);
+    this->size = stream->size();
     
     rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
             SpatialIndex::RTree::BLM_STR, *stream, *rstar_file, utilisation,
             index_capacity, leaf_capacity, ndims,
             SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
+    
+    std::cerr << *rstar_tree;
+    std::cerr << "Buffer hits: " << rstar_buffer->getHits() << std::endl;
+    std::cerr << "Index ID: " << indexIdentifier << std::endl;
+
 }
 
 CachedParameterisation::~CachedParameterisation()
@@ -82,4 +87,17 @@ void CachedParameterisation::ComputeTransformation(const G4int copy_number,
 G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,
             const G4int copy_number, const G4VTouchable *parent_touchable) {
 }; 
+
+Visitor* CachedParameterisation::GetNeighbors(G4ThreeVector position, G4int number) {
+    double p[3];
+    p[0] = position.x();
+    p[1] = position.y(); 
+    p[2] = position.z();
+    SpatialIndex::Point point = SpatialIndex::Point(p, 3);
+
+    Visitor* visitor;
+    rstar_tree->nearestNeighborQuery(number, point, *visitor);
+  
+    return visitor;
+};
 
