@@ -69,7 +69,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
 
-    CachedParameterisation* param = new CachedParameterisation("");
+    CachedParameterisation* param = new CachedParameterisation("data.hdf5");
 
     G4Orb* sphere_solid = new G4Orb("sphere", 1*mm);
     G4LogicalVolume* sphere_logical =
