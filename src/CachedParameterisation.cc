@@ -28,7 +28,6 @@
 
 // USER//
 #include "CachedParameterisation.hh"
-#include "DataStream.hh"
 
 
 CachedParameterisation::CachedParameterisation(G4String filename)
@@ -39,20 +38,26 @@ CachedParameterisation::CachedParameterisation(G4String filename)
     this->do_dimensions = false;
 
     // Compute R* Tree
+    std::string name = "tree";
     rstar_file = SpatialIndex::StorageManager::createNewDiskStorageManager(
-            filename, 4096);
+            name, 4096);
     rstar_buffer = SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(
             *rstar_file, 10, false);
 
     SpatialIndex::id_type indexIdentifier;
     double fill_factor = 0.7;
-    int capacity = 100;
+    int index_capacity = 100;
+    int leaf_capacity = 10;
+    double utilisation = 0.4;
     int ndims = 3;
 
-    rstar_tree = SpatialIndex::RTree::createNewRTree(
-            *rstar_buffer, fill_factor, capacity, capacity, ndims, 
+    stream = new DataStream(filename);
+    
+    rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
+            SpatialIndex::RTree::BLM_STR, *stream, *rstar_file, utilisation,
+            index_capacity, leaf_capacity, ndims,
             SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
-
+            
     // for each replica
     // rstar_tree->insertData(uint32_t len, const byte* pData,
     //                        const IShape& shape, id_type shapeIdentifier);

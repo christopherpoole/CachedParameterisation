@@ -40,6 +40,9 @@
 // SpatialIndex //
 #include "spatialindex/SpatialIndex.h"
 
+// USER //
+#include "DataStream.hh"
+
 
 class CachedParameterisation : public G4VPVParameterisation{
   public:
@@ -69,6 +72,8 @@ class CachedParameterisation : public G4VPVParameterisation{
     SpatialIndex::IStorageManager* rstar_file;
     SpatialIndex::StorageManager::IBuffer* rstar_buffer;
     SpatialIndex::ISpatialIndex* rstar_tree;
+
+    DataStream* stream;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H
