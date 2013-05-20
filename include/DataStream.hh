@@ -94,6 +94,11 @@ class DataStream: public SpatialIndex::IDataStream
 
 	void readNextEntry()
 	{
+        if (copy_number > size()-1) {
+            m_pNext = 0;
+            return;
+        }
+
 		double low[3], high[3];
         
         // Calculate bounding box of replica 
