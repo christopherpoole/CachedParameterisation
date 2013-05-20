@@ -71,7 +71,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     CachedParameterisation* param = new CachedParameterisation("data.hdf5");
 
-    G4Orb* sphere_solid = new G4Orb("sphere", 1*mm);
+    G4Orb* sphere_solid = new G4Orb("sphere", 1*cm);
     G4LogicalVolume* sphere_logical =
         new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
 
