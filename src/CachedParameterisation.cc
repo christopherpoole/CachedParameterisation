@@ -76,12 +76,14 @@ G4int CachedParameterisation::GetSize()
 void CachedParameterisation::ComputeTransformation(const G4int copy_number,
         G4VPhysicalVolume* physical_volume) const
 {
-    G4int x = G4UniformRand()*2000;
-    G4int y = G4UniformRand()*2000;
-    G4int z = G4UniformRand()*2000;
-
+    G4double x = this->x[copy_number];
+    G4double y = this->y[copy_number];
+    G4double z = this->z[copy_number];
+    
     G4ThreeVector origin = G4ThreeVector(x, y, z);
     physical_volume->SetTranslation(origin);
+
+    G4cout << origin << G4endl;
 }
 
 G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,
@@ -97,5 +99,11 @@ void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int numb
 
     Visitor visitor;
     rstar_tree->nearestNeighborQuery(number, point, visitor);
+
+    this->x = visitor.x;
+    this->y = visitor.y;
+    this->z = visitor.z;
+
+    this->size = x.size();
 };
 

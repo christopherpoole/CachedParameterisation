@@ -116,7 +116,7 @@ class DataStream: public SpatialIndex::IDataStream
 
         SpatialIndex::Region r(low, high, 3);
         m_pNext = new SpatialIndex::RTree::Data(
-                sizeof(double)*3, reinterpret_cast<byte*>(data), r, copy_number);
+                sizeof(double)*4, reinterpret_cast<byte*>(data), r, copy_number);
 
         copy_number++;
 	}
@@ -136,7 +136,9 @@ public:
 	size_t m_leafIO;
 
 public:
-	Visitor() : m_indexIO(0), m_leafIO(0) {}
+	Visitor() : m_indexIO(0), m_leafIO(0) {
+    
+    }
 
 	void visitNode(const SpatialIndex::INode& n)
 	{
@@ -155,17 +157,26 @@ public:
 		d.getData(cLen, &pData);
         
         double* s = reinterpret_cast<double*>(pData); // x, y, z, radius
-		G4cout << s[0] << " " << s[1] << " " << s[2] << " " << s[3] << G4endl;
-		delete[] pData;
+		x.push_back(s[0]);
+		y.push_back(s[1]);
+		z.push_back(s[2]);
+		r.push_back(s[3]);
+		copy_number.push_back(d.getIdentifier());
+        
+        delete[] pData;
 
-		G4cout << "visit data: " << d.getIdentifier() << G4endl;
 	}
 
 	void visitData(std::vector<const SpatialIndex::IData*>& v)
 	{
-		G4cout << v[0]->getIdentifier() << " " << v[1]->getIdentifier() << G4endl;
 	}
 
+  public:
+    std::vector<int> copy_number;
+    std::vector<double> x;
+    std::vector<double> y;
+    std::vector<double> z;
+    std::vector<double> r;
 };
 
 #endif

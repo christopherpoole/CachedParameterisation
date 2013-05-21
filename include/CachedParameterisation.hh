@@ -76,6 +76,11 @@ class CachedParameterisation : public G4VPVParameterisation{
     SpatialIndex::ISpatialIndex* rstar_tree;
 
     DataStream* stream;
+
+    std::vector<double> x;
+    std::vector<double> y;
+    std::vector<double> z;
+    std::vector<double> r;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H
