@@ -41,9 +41,6 @@ class SteppingAction : public G4UserSteppingAction
     virtual ~SteppingAction();
 
     virtual void UserSteppingAction(const G4Step* step);
-
-  public:
-    G4int count;
 };
 
 

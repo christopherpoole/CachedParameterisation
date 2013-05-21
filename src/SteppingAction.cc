@@ -43,7 +43,6 @@
 
 SteppingAction::SteppingAction()
 {
-    count = 0;
 }
 
 SteppingAction::~SteppingAction()
@@ -52,12 +51,9 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
-    if (count > 99) count = 0;
-
     DetectorConstruction * detector_construction = (DetectorConstruction*)
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-    detector_construction->replication->SetNoReplicas(count);
+
+    detector_construction->UpdateParameterisation(step->GetPostStepPoint()->GetPosition());
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
-    
-    count++;
 }
