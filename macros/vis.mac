@@ -11,5 +11,5 @@
 /vis/scene/endOfEventAction accumulate
 
 /run/verbose 2
-/run/beamOn 1
+/run/beamOn 100
 
