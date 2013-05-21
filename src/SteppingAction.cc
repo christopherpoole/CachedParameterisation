@@ -26,43 +26,38 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef DetectorConstruction_H
-#define DetectorConstruction_H
-
-#include <vector>
-#include <inttypes.h>
+// USER //
+#include "SteppingAction.hh"
+#include "DetectorConstruction.hh"
 
 // GEANT4 //
-#include "G4VUserDetectorConstruction.hh"
-#include "G4Box.hh"
-#include "G4Orb.hh"
-#include "G4LogicalVolume.hh"
-#include "G4PVPlacement.hh"
-#include "G4PVParameterised.hh"
+#include "G4SteppingManager.hh"
+#include "G4Track.hh"
+#include "G4Step.hh"
+#include "G4StepPoint.hh"
+#include "G4TrackStatus.hh"
+#include "G4RunManager.hh"
+
+#include "Randomize.hh"
 
 
-// USER //
-#include "CachedParameterisation.hh"
-
-
-class DetectorConstruction : public G4VUserDetectorConstruction
+SteppingAction::SteppingAction()
 {
-  public:
-    DetectorConstruction(G4int count, G4double smartless);
-    ~DetectorConstruction();
+    count = 0;
+}
 
-    G4VPhysicalVolume* Construct();
+SteppingAction::~SteppingAction()
+{
+}
 
-  public:
-    G4Box* world_solid;
-    G4LogicalVolume* world_logical;
-    G4VPhysicalVolume* world_physical;
+void SteppingAction::UserSteppingAction(const G4Step* step)
+{
+    if (count > 99) count = 0;
+
+    DetectorConstruction * detector_construction = (DetectorConstruction*)
+        (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    detector_construction->replication->SetNoReplicas(count);
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
     
-    CachedParameterisation* parameterisation;
-    G4PVParameterised* replication;
-
-    G4int count;
-    G4double smartless;
-};
-#endif
-
+    count++;
+}

@@ -30,6 +30,7 @@
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "PrimaryGeneratorAction.hh"
+#include "SteppingAction.hh"
 
 // GEANT4 //
 #include "G4RunManager.hh"
@@ -54,6 +55,9 @@ int main(int, char** argv)
 
     G4VUserPrimaryGeneratorAction* primary_generator = new PrimaryGeneratorAction;
     run_manager->SetUserAction(primary_generator);
+
+    G4UserSteppingAction* stepping_action = new SteppingAction;
+    run_manager->SetUserAction(stepping_action);
 
     run_manager->Initialize();
 

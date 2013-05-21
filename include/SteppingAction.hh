@@ -26,43 +26,26 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef DetectorConstruction_H
-#define DetectorConstruction_H
+#ifndef STEPPINGACTION_HH
+#define STEPPINGACTION_HH
 
-#include <vector>
-#include <inttypes.h>
-
-// GEANT4 //
-#include "G4VUserDetectorConstruction.hh"
-#include "G4Box.hh"
-#include "G4Orb.hh"
-#include "G4LogicalVolume.hh"
-#include "G4PVPlacement.hh"
-#include "G4PVParameterised.hh"
+#include "globals.hh"
+#include "G4UserSteppingAction.hh"
+#include "G4Step.hh"
 
 
-// USER //
-#include "CachedParameterisation.hh"
-
-
-class DetectorConstruction : public G4VUserDetectorConstruction
+class SteppingAction : public G4UserSteppingAction
 {
   public:
-    DetectorConstruction(G4int count, G4double smartless);
-    ~DetectorConstruction();
+    SteppingAction();
+    virtual ~SteppingAction();
 
-    G4VPhysicalVolume* Construct();
+    virtual void UserSteppingAction(const G4Step* step);
 
   public:
-    G4Box* world_solid;
-    G4LogicalVolume* world_logical;
-    G4VPhysicalVolume* world_physical;
-    
-    CachedParameterisation* parameterisation;
-    G4PVParameterised* replication;
-
     G4int count;
-    G4double smartless;
 };
-#endif
+
+
+#endif // STEPPINGACTION_HH
 

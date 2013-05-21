@@ -38,7 +38,6 @@
 #include "G4VisAttributes.hh"
 #include "G4UIcommand.hh"
 #include "G4Orb.hh"
-#include "G4PVParameterised.hh"
 
 
 DetectorConstruction::DetectorConstruction(G4int count, G4double smartless)
