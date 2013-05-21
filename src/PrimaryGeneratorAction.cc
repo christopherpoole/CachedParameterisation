@@ -38,18 +38,19 @@
 #include "G4ParticleDefinition.hh"
 #include "G4RunManager.hh"
 
+#include "Randomize.hh"
+
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
     particle_gun = new G4ParticleGun();
 
     G4ParticleTable* particle_table = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition* particle = particle_table->FindParticle("geantino");
+    G4ParticleDefinition* particle = particle_table->FindParticle("e-");
   
     particle_gun->SetParticleDefinition(particle);
     particle_gun->SetParticlePosition(G4ThreeVector());
-    particle_gun->SetParticleEnergy(1.*MeV);
-    particle_gun->SetParticleMomentumDirection(G4ThreeVector(0, 0, -1));
+    particle_gun->SetParticleEnergy(100.*keV);
 
     detector_construction = (DetectorConstruction*) (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 }
@@ -61,6 +62,8 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
+    particle_gun->SetParticleMomentumDirection(
+            G4ThreeVector(G4UniformRand(), G4UniformRand(), G4UniformRand()));
     particle_gun->GeneratePrimaryVertex(event);
 }
 
