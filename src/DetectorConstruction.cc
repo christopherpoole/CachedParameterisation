@@ -82,3 +82,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     return world_physical;
 }
 
+void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
+    parameterisation->ComputeNeighbors(position, 10);
+};
+

@@ -52,6 +52,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     ~DetectorConstruction();
 
     G4VPhysicalVolume* Construct();
+    void UpdateParameterisation(G4ThreeVector position);
 
   public:
     G4Box* world_solid;

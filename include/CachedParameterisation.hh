@@ -62,7 +62,7 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4Material* ComputeMaterial(G4VPhysicalVolume *physical_volume,
             const G4int copy_number, const G4VTouchable *parent_touchable);
  
-    Visitor* ComputeNeighbors(G4ThreeVector position, G4int number);
+    void ComputeNeighbors(G4ThreeVector position, G4int number);
 
   private:
     G4int size;

@@ -116,7 +116,7 @@ class DataStream: public SpatialIndex::IDataStream
 
         SpatialIndex::Region r(low, high, 3);
         m_pNext = new SpatialIndex::RTree::Data(
-                sizeof(double)*4, reinterpret_cast<byte*>(data), r, copy_number);
+                sizeof(double)*3, reinterpret_cast<byte*>(data), r, copy_number);
 
         copy_number++;
 	}
