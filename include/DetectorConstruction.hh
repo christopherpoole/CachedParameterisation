@@ -34,11 +34,15 @@
 
 // GEANT4 //
 #include "G4VUserDetectorConstruction.hh"
-
 #include "G4Box.hh"
 #include "G4Orb.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
+#include "G4PVParameterised.hh"
+
+
+// USER //
+#include "CachedParameterisation.hh"
 
 
 class DetectorConstruction : public G4VUserDetectorConstruction
@@ -53,7 +57,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4Box* world_solid;
     G4LogicalVolume* world_logical;
     G4VPhysicalVolume* world_physical;
-   
+    
+    CachedParameterisation* parameterisation;
+    G4PVParameterised* replication;
+
     G4int count;
     G4double smartless;
 };

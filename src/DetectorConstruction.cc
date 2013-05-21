@@ -40,9 +40,6 @@
 #include "G4Orb.hh"
 #include "G4PVParameterised.hh"
 
-// CachedParameterisation //
-#include "CachedParameterisation.hh"
-
 
 DetectorConstruction::DetectorConstruction(G4int count, G4double smartless)
 {
@@ -69,15 +66,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
 
-    CachedParameterisation* param = new CachedParameterisation("data.hdf5");
+    parameterisation = new CachedParameterisation("data.hdf5");
 
     G4Orb* sphere_solid = new G4Orb("sphere", 1*cm);
     G4LogicalVolume* sphere_logical =
         new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
 
-    new G4PVParameterised("CachedParam", sphere_logical, world_logical, kUndefined,
-            count, param, false); // checking overlaps 
-            //param->GetSize(), param, false); // checking overlaps 
+    replication = new G4PVParameterised("CachedParam",
+            sphere_logical, world_logical, kUndefined,
+            0, parameterisation, false);  
+    
+    // Set to 0 here, as it will be updated
+    // in the stepping action.
+    //replication->SetNoReplicas(count);    
 
     return world_physical;
 }
