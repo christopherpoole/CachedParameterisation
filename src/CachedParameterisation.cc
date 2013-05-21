@@ -88,7 +88,7 @@ G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_
             const G4int copy_number, const G4VTouchable *parent_touchable) {
 }; 
 
-Visitor* CachedParameterisation::GetNeighbors(G4ThreeVector position, G4int number) {
+Visitor* CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
     double p[3];
     p[0] = position.x();
     p[1] = position.y(); 
