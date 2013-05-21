@@ -58,18 +58,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4Material* air = nist_manager->FindOrBuildMaterial("G4_AIR");
     G4Material* water = nist_manager->FindOrBuildMaterial("G4_WATER");
 
-    world_solid = new G4Box("world_solid", 200*cm, 200*cm, 200*cm);
+    world_solid = new G4Box("world_solid", 20*cm, 20*cm, 20*cm);
     world_logical = new G4LogicalVolume(world_solid, air, "world_logical", 0, 0, 0);
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     world_logical->SetVisAttributes(G4VisAttributes::Invisible);
-    world_logical->SetSmartless(smartless);
+    //world_logical->SetSmartless(smartless);
+    world_logical->SetSmartless(0);
 
     parameterisation = new CachedParameterisation("data.hdf5");
 
-    G4Orb* sphere_solid = new G4Orb("sphere", 1*cm);
+    G4Orb* sphere_solid = new G4Orb("sphere", 1*mm);
     G4LogicalVolume* sphere_logical =
-        new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
+        new G4LogicalVolume(sphere_solid, air, "sphere", 0, 0, 0);
 
     replication = new G4PVParameterised("CachedParam",
             sphere_logical, world_logical, kUndefined,
@@ -83,6 +84,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 }
 
 void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    parameterisation->ComputeNeighbors(position, 10);
+    parameterisation->ComputeNeighbors(position, 50);
+    replication->SetNoReplicas(parameterisation->GetSize());
 };
 
