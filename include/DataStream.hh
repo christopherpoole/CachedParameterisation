@@ -49,7 +49,7 @@ class DataStream: public SpatialIndex::IDataStream
   public:
 	DataStream(G4String filename)
 	{
-        transform = new HDF5MappedIO<int>();
+        transform = new HDF5MappedIO<double>();
         transform->Read(filename, "transform");
 
         copy_number = 0;
@@ -103,13 +103,13 @@ class DataStream: public SpatialIndex::IDataStream
         
         // Calculate bounding box of replica 
         G4double delta = 0.1;
-        G4int x = transform->GetValue(copy_number, 0)*cm;
+        G4float x = transform->GetValue(copy_number, 0)*cm;
         low[0] = x - delta; high[0] = x + delta;
 
-        G4int y = transform->GetValue(copy_number, 1)*cm;
+        G4float y = transform->GetValue(copy_number, 1)*cm;
         low[1] = y - delta; high[1] = y + delta;
         
-        G4int z = transform->GetValue(copy_number, 2)*cm;
+        G4float z = transform->GetValue(copy_number, 2)*cm;
         low[2] = z - delta; high[2] = z + delta;
 
         double data[4] = {x, y, z, 0.1}; // x, y, z, radius
@@ -123,7 +123,7 @@ class DataStream: public SpatialIndex::IDataStream
 
   private:
     // Cached data files stored by copy number // 
-    HDF5MappedIO<int>* transform;
+    HDF5MappedIO<double>* transform;
     SpatialIndex::RTree::Data* m_pNext;
 
     G4int copy_number;    
