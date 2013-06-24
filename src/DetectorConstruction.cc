@@ -58,17 +58,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4Material* air = nist_manager->FindOrBuildMaterial("G4_AIR");
     G4Material* water = nist_manager->FindOrBuildMaterial("G4_WATER");
 
-    world_solid = new G4Box("world_solid", 20*cm, 20*cm, 20*cm);
+    world_solid = new G4Box("world_solid", 2*cm, 2*cm, 2*cm);
     world_logical = new G4LogicalVolume(world_solid, air, "world_logical", 0, 0, 0);
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
-    //world_logical->SetSmartless(smartless);
-    world_logical->SetSmartless(0);
+    world_logical->SetSmartless(smartless);
 
     parameterisation = new CachedParameterisation("data.hdf5");
 
-    G4Orb* sphere_solid = new G4Orb("sphere", 1*mm);
+    G4Orb* sphere_solid = new G4Orb("sphere", .1*mm);
     G4LogicalVolume* sphere_logical =
         new G4LogicalVolume(sphere_solid, air, "sphere", 0, 0, 0);
 
@@ -84,7 +83,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 }
 
 void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    parameterisation->ComputeNeighbors(position, 50);
+    parameterisation->ComputeNeighbors(position, 10);
     replication->SetNoReplicas(parameterisation->GetSize());
 };
 
