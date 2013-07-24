@@ -103,13 +103,13 @@ class DataStream: public SpatialIndex::IDataStream
         
         // Calculate bounding box of replica 
         G4double delta = 0.1;
-        G4float x = transform->GetValue(copy_number, 0)*cm;
+        G4float x = transform->GetValue(copy_number, 0)*mm;
         low[0] = x - delta; high[0] = x + delta;
 
-        G4float y = transform->GetValue(copy_number, 1)*cm;
+        G4float y = transform->GetValue(copy_number, 1)*mm;
         low[1] = y - delta; high[1] = y + delta;
         
-        G4float z = transform->GetValue(copy_number, 2)*cm;
+        G4float z = transform->GetValue(copy_number, 2)*mm;
         low[2] = z - delta; high[2] = z + delta;
 
         double data[4] = {x, y, z, 0.1}; // x, y, z, radius
@@ -157,6 +157,7 @@ public:
 		d.getData(cLen, &pData);
         
         double* s = reinterpret_cast<double*>(pData); // x, y, z, radius
+
 		x.push_back(s[0]);
 		y.push_back(s[1]);
 		z.push_back(s[2]);
