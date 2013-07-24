@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # G4VoxelData
 find_package(G4VoxelData)
+include_directories(/usr/local/include/cpp)
 
 # User code
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
