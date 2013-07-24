@@ -4,6 +4,10 @@ GEANT4 provides a number of techniques for representing replica or similar repea
 # Patching GEANT4
 This code requires a slight modification to `G4PVReplica`. We need to allow initialisation with zero replicas, and we add a `G4PVReplica::SetNoReplicas` method with we update based on the position of the current step. Replace the files in `patches` with the corresponding files in `geant4.9.6/source/geometry/volumes/` and recompile GEANT4.
 
+# Dependencies
+A number of dependencies are required for reading/writing data on disk as well as constructing the R* trees:
+    * [libspatialindex](https://github.com/libspatialindex/libspatialindex.git)
+
 # Compilation
     mkdir build/
     cd build/
