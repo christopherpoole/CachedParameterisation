@@ -40,10 +40,24 @@
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
 
+#include "Randomize.hh"
+
+// Files
+#include <fcntl.h>
+#include <unistd.h>
+
 
 //int main(int argc,char** argv)
 int main(int, char** argv)
 {
+    CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
+
+    G4long seed;
+    G4long random_data = open("/dev/random", O_RDONLY);
+        read(random_data, &seed, sizeof seed);
+        close(random_data);
+    CLHEP::HepRandom::setTheSeed(seed);
+
     G4RunManager* run_manager = new G4RunManager;
 
     DetectorConstruction* detector_construction =
