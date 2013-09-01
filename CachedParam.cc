@@ -47,7 +47,7 @@ int main(int, char** argv)
     G4RunManager* run_manager = new G4RunManager;
 
     DetectorConstruction* detector_construction =
-        new DetectorConstruction(atoi(argv[1]), atof(argv[2]));
+        new DetectorConstruction(argv[1], atoi(argv[2]), atof(argv[3]));
     run_manager->SetUserInitialization(detector_construction);
 
     G4VUserPhysicsList* physics_list = new PhysicsList;
