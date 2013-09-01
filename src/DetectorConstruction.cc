@@ -40,10 +40,11 @@
 #include "G4Orb.hh"
 
 
-DetectorConstruction::DetectorConstruction(G4String filename,
+DetectorConstruction::DetectorConstruction(G4String filename, G4String dataset,
                                            G4int count, G4double smartless)
 {
     this->filename = filename;
+    this->dataset = dataset;
     this->count = count;
     this->smartless = smartless;
 }
@@ -67,7 +68,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
 
-    parameterisation = new CachedParameterisation(filename);
+    parameterisation = new CachedParameterisation(filename, dataset);
 
     G4Orb* sphere_solid = new G4Orb("sphere", .1*mm);
     G4LogicalVolume* sphere_logical =

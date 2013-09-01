@@ -30,7 +30,7 @@
 #include "CachedParameterisation.hh"
 
 
-CachedParameterisation::CachedParameterisation(G4String filename)
+CachedParameterisation::CachedParameterisation(G4String filename, G4String dataset)
 {
 
     this->do_transform = true;
@@ -50,7 +50,7 @@ CachedParameterisation::CachedParameterisation(G4String filename)
     double utilisation = 0.4;
     int ndims = 3;
 
-    stream = new DataStream(filename);
+    stream = new DataStream(filename, dataset);
     this->size = stream->size();
     
     rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(

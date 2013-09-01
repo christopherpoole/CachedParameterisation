@@ -46,7 +46,7 @@
 
 class CachedParameterisation : public G4VPVParameterisation{
   public:
-    CachedParameterisation(G4String filename);
+    CachedParameterisation(G4String filename, G4String dataset);
     ~CachedParameterisation();
 
   public:

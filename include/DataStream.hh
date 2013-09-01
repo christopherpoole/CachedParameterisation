@@ -47,10 +47,10 @@
 class DataStream: public SpatialIndex::IDataStream
 {
   public:
-	DataStream(G4String filename)
+	DataStream(G4String filename, G4String dataset)
 	{
         transform = new HDF5MappedIO<double>();
-        transform->Read(filename, "transform");
+        transform->Read(filename, dataset);
 
         copy_number = 0;
 		readNextEntry();

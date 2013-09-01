@@ -48,7 +48,8 @@
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction(G4String filename, G4int count, G4double smartless);
+    DetectorConstruction(G4String filename, G4String dataset,
+                         G4int count, G4double smartless);
     ~DetectorConstruction();
 
     G4VPhysicalVolume* Construct();
@@ -63,6 +64,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4PVParameterised* replication;
 
     G4String filename;
+    G4String dataset;
     G4int count;
     G4double smartless;
 };
