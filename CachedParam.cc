@@ -39,6 +39,7 @@
 #include "G4UItcsh.hh"
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
+#include "G4StepLimiterBuilder.hh"
 
 
 //int main(int argc,char** argv)
@@ -50,7 +51,8 @@ int main(int, char** argv)
         new DetectorConstruction(argv[1], argv[2], atoi(argv[3]), atof(argv[4]));
     run_manager->SetUserInitialization(detector_construction);
 
-    G4VUserPhysicsList* physics_list = new PhysicsList;
+    G4VModularPhysicsList* physics_list = new PhysicsList;
+    physics_list->RegisterPhysics(new G4StepLimiterBuilder());
     run_manager->SetUserInitialization(physics_list);
 
     G4VUserPrimaryGeneratorAction* primary_generator = new PrimaryGeneratorAction;

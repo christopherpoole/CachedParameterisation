@@ -38,6 +38,7 @@
 #include "G4VisAttributes.hh"
 #include "G4UIcommand.hh"
 #include "G4Orb.hh"
+#include "G4UserLimits.hh"
 
 
 DetectorConstruction::DetectorConstruction(G4String filename, G4String dataset,
@@ -67,6 +68,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
+
+    // User Limits
+    G4UserLimits* step_limit = new G4UserLimits(1*mm);
+    world_logical->SetUserLimits(step_limit);
 
     parameterisation = new CachedParameterisation(filename, dataset);
 
