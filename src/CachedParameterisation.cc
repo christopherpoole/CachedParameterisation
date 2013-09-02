@@ -32,6 +32,8 @@
 
 CachedParameterisation::CachedParameterisation(G4String filename, G4String dataset)
 {
+    // Initialise LRU cache
+    voxel_cache = new LRUCache<int, int>(10);
 
     this->do_transform = true;
     this->do_dimensions = false;

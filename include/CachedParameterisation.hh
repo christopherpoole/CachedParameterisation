@@ -40,6 +40,9 @@
 // SpatialIndex //
 #include "spatialindex/SpatialIndex.h"
 
+// LRU Cache //
+#include "lru_cache.h"
+
 // USER //
 #include "DataStream.hh"
 
@@ -75,7 +78,11 @@ class CachedParameterisation : public G4VPVParameterisation{
     SpatialIndex::StorageManager::IBuffer* rstar_buffer;
     SpatialIndex::ISpatialIndex* rstar_tree;
 
+    // Data on disk
     DataStream* stream;
+
+    // LRU cache in memory
+    LRUCache<int, int>* voxel_cache;
 
     std::vector<double> x;
     std::vector<double> y;
