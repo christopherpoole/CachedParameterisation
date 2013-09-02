@@ -32,38 +32,17 @@
 
 CachedParameterisation::CachedParameterisation(G4String filename, G4String dataset)
 {
-    // Initialise LRU cache
-    voxel_cache = new LRUCache<int, int>(10);
-
     this->do_transform = true;
     this->do_dimensions = false;
 
-    // Compute R* Tree
-    std::string name = "tree";
-    rstar_file = SpatialIndex::StorageManager::createNewDiskStorageManager(
-            name, 4096);
-    rstar_buffer = SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(
-            *rstar_file, 10, false);
+    // Initialise LRU cache
+    voxel_cache = new LRUCache<int, int>(10);
 
-    SpatialIndex::id_type indexIdentifier;
-    double fill_factor = 0.7;
-    int index_capacity = 100;
-    int leaf_capacity = 10;
-    double utilisation = 0.4;
-    int ndims = 3;
-
+    // Initialise access to data on disk
     stream = new DataStream(filename, dataset);
     this->size = stream->size();
-    
-    rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
-            SpatialIndex::RTree::BLM_STR, *stream, *rstar_file, utilisation,
-            index_capacity, leaf_capacity, ndims,
-            SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
-    
-    std::cerr << *rstar_tree;
-    std::cerr << "Buffer hits: " << rstar_buffer->getHits() << std::endl;
-    std::cerr << "Index ID: " << indexIdentifier << std::endl;
 
+    BuildRTree(); 
 }
 
 CachedParameterisation::~CachedParameterisation()
@@ -105,3 +84,28 @@ void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int numb
     this->size = x.size();
 };
 
+
+void CachedParameterisation::BuildRTree() {
+    // Compute R* Tree
+    std::string name = "tree";
+    rstar_file = SpatialIndex::StorageManager::createNewDiskStorageManager(
+            name, 4096);
+    rstar_buffer = SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(
+            *rstar_file, 10, false);
+
+    SpatialIndex::id_type indexIdentifier;
+    double fill_factor = 0.7;
+    int index_capacity = 100;
+    int leaf_capacity = 10;
+    double utilisation = 0.4;
+    int ndims = 3;
+
+    rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
+            SpatialIndex::RTree::BLM_STR, *stream, *rstar_file, utilisation,
+            index_capacity, leaf_capacity, ndims,
+            SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
+    
+    std::cerr << *rstar_tree;
+    std::cerr << "Buffer hits: " << rstar_buffer->getHits() << std::endl;
+    std::cerr << "Index ID: " << indexIdentifier << std::endl;
+};

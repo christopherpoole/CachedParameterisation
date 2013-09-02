@@ -53,8 +53,6 @@ class CachedParameterisation : public G4VPVParameterisation{
     ~CachedParameterisation();
 
   public:
-    G4int GetSize();
-    
     using G4VPVParameterisation::ComputeTransformation;
     void ComputeTransformation (const G4int copy_number,
             G4VPhysicalVolume* physical_volume) const;
@@ -66,6 +64,9 @@ class CachedParameterisation : public G4VPVParameterisation{
             const G4int copy_number, const G4VTouchable *parent_touchable);
  
     void ComputeNeighbors(G4ThreeVector position, G4int number);
+
+  private:
+    void BuildRTree();
 
   public:
     int GetSize() {
