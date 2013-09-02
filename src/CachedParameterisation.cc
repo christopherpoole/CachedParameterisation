@@ -70,10 +70,6 @@ CachedParameterisation::~CachedParameterisation()
 {
 }
 
-G4int CachedParameterisation::GetSize()
-{
-    return this->size;
-}
 
 void CachedParameterisation::ComputeTransformation(const G4int copy_number,
         G4VPhysicalVolume* physical_volume) const

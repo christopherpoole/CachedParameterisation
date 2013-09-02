@@ -67,6 +67,11 @@ class CachedParameterisation : public G4VPVParameterisation{
  
     void ComputeNeighbors(G4ThreeVector position, G4int number);
 
+  public:
+    int GetSize() {
+        return this->size;
+    };
+    
   private:
     G4int size;
 
