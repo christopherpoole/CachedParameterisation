@@ -22,7 +22,7 @@ spacing = float(sys.argv[4])
 
 f = h5py.File("data.hdf5")
 d = f.create_dataset('transform', (count*chunks, ndim), float, chunks=(chunks, 1))
-d[...] = numpy.random.random((count*chunks, ndim))*spacing
+d[...] = (numpy.random.random((count*chunks, ndim))*spacing) - (spacing/2.)
 #d[...] = coords
 f.close()
 
