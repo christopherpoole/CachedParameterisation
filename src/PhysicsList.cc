@@ -31,27 +31,48 @@
 
 // GEANT4 //
 #include "G4EmStandardPhysics_option1.hh"
+#include "G4ProcessManager.hh"
+#include "G4StepLimiter.hh"
 
 
 PhysicsList::PhysicsList()
 {
-    RegisterPhysics(new G4EmStandardPhysics_option1());
+    em_physics = new G4EmStandardPhysics_option1();
 }
 
 PhysicsList::~PhysicsList()
 {
+    delete em_physics;
 }
 
 void PhysicsList::ConstructParticle()
 {
-    G4VModularPhysicsList::ConstructParticle();
+    em_physics->ConstructParticle();
 }
 
 void PhysicsList::ConstructProcess()
 {
-    G4VModularPhysicsList::ConstructProcess();
-}
+    AddTransportation();
+    em_physics->ConstructProcess();
 
+    // Add step limiter
+    G4StepLimiter* step_limiter = new G4StepLimiter();
+
+    theParticleIterator->reset();
+    while((*theParticleIterator)()) {
+        G4ParticleDefinition* particle = theParticleIterator->value();
+        G4ProcessManager* process_manager = particle->GetProcessManager();
+        G4String particle_name = particle->GetParticleName();
+
+        if (particle_name == "gamma") {
+            process_manager->AddDiscreteProcess(step_limiter);
+        } else if (particle_name == "e-") {
+            process_manager->AddDiscreteProcess(step_limiter);
+        } else if (particle_name == "e+") {
+            process_manager->AddDiscreteProcess(step_limiter);
+        }
+    }
+}
 
 void PhysicsList::SetCuts()
 {

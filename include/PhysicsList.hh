@@ -36,14 +36,17 @@
 
 class PhysicsList: public G4VModularPhysicsList
 {
-    public:
-        PhysicsList();
-        ~PhysicsList();
+  public:
+    PhysicsList();
+    ~PhysicsList();
 
-    protected:
-        void ConstructParticle();
-        void ConstructProcess();
-        void SetCuts();
+  protected:
+    void ConstructParticle();
+    void ConstructProcess();
+    void SetCuts();
+
+  public:
+    G4VPhysicsConstructor* em_physics;
 };
 
 #endif
