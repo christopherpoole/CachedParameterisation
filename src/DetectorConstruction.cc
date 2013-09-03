@@ -98,7 +98,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    parameterisation->ComputeNeighbors(position, 10);
+    parameterisation->ComputeNeighbors(position, count);
     replication->SetNoReplicas(parameterisation->GetSize());
 
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
