@@ -35,6 +35,8 @@
 #include "globals.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
+#include "G4RunManager.hh"
+#include "G4VVisManager.hh"
 #include "G4VisAttributes.hh"
 #include "G4UIcommand.hh"
 #include "G4Orb.hh"
@@ -70,7 +72,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_logical = new G4LogicalVolume(world_solid, air, "world_logical", 0, 0, 0);
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
-    //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
+    world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
 
     // User Limits
@@ -98,5 +100,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
     parameterisation->ComputeNeighbors(position, 10);
     replication->SetNoReplicas(parameterisation->GetSize());
+
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
+    G4VVisManager::GetConcreteInstance()->GeometryHasChanged();
 };
 

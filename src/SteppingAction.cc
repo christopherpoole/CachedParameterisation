@@ -37,7 +37,6 @@
 #include "G4StepPoint.hh"
 #include "G4TrackStatus.hh"
 #include "G4RunManager.hh"
-#include "G4VVisManager.hh"
 
 #include "Randomize.hh"
 
@@ -54,9 +53,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 {
     DetectorConstruction * detector_construction = (DetectorConstruction*)
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-
-    detector_construction->UpdateParameterisation(step->GetPostStepPoint()->GetPosition());
-    G4RunManager::GetRunManager()->GeometryHasBeenModified();
-
-    G4VVisManager::GetConcreteInstance()->GeometryHasChanged();
+    
+    G4ThreeVector current_position = step->GetPostStepPoint()->GetPosition();
+    detector_construction->UpdateParameterisation(current_position);
 }
+
