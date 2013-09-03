@@ -16,4 +16,6 @@ A number of dependencies are required for reading/writing data on disk as well a
     cd ..
 
 # Usage
-    ./build/CachedParam <number of replicas> <smartless>
+See `macros/config.mac` for configuration options.
+
+    ./build/CachedParam macros/vis.mac
