@@ -1,0 +1,8 @@
+# Configuration
+
+/CachedParam/SetFilename data.hdf5
+/CachedParam/SetDataset transform
+/CachedParam/SetCount 10
+/CachedParam/SetSmartless 0
+/CachedParam/SetLimit 5 mm
+

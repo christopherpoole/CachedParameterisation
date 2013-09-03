@@ -1,0 +1,7 @@
+# Batch/Run
+
+/control/execute macros/config.mac
+
+/run/initialize
+/run/beamOn 10
+

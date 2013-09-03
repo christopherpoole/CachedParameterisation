@@ -1,3 +1,5 @@
+# Visualisation
+
 /vis/verbose 0
 /vis/open OGLSX 600x600-0+50
 /vis/ogl/set/displayListLimit 1000000
@@ -10,6 +12,5 @@
 /vis/scene/add/trajectories
 /vis/scene/endOfEventAction accumulate
 
-/run/verbose 2
-/run/beamOn 10
+/control/execute macros/run.mac
 
