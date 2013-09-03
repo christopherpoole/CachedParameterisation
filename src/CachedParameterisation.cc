@@ -60,7 +60,7 @@ void CachedParameterisation::ComputeTransformation(const G4int copy_number,
     G4ThreeVector origin = G4ThreeVector(x, y, z);
     physical_volume->SetTranslation(origin);
 
-    G4cout << origin << G4endl;
+    voxel_cache->insert(copy_number, copy_number);
 }
 
 G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,

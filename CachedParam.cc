@@ -61,9 +61,7 @@ int main(int, char** argv)
 
     G4RunManager* run_manager = new G4RunManager;
 
-    DetectorConstruction* detector_construction =
-        new DetectorConstruction(argv[1], argv[2], atoi(argv[3]),
-                                 atof(argv[4]), atof(argv[5]));
+    DetectorConstruction* detector_construction = new DetectorConstruction();
     run_manager->SetUserInitialization(detector_construction);
 
     G4VModularPhysicsList* physics_list = new PhysicsList;
@@ -76,15 +74,14 @@ int main(int, char** argv)
     G4UserSteppingAction* stepping_action = new SteppingAction;
     run_manager->SetUserAction(stepping_action);
 
-    run_manager->Initialize();
-
     G4VisManager* vis_manager = new G4VisExecutive;
     vis_manager->Initialize();
 
     G4UImanager* UI = G4UImanager::GetUIpointer();
 
     G4UIsession* session = new G4UIterminal(new G4UItcsh);
-    UI->ApplyCommand("/control/execute macros/vis.mac");
+    G4String command = "/control/execute ";
+    UI->ApplyCommand(command + argv[1]);
     session->SessionStart();
 
     delete session;

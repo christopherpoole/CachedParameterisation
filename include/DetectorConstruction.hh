@@ -43,17 +43,40 @@
 
 // USER //
 #include "CachedParameterisation.hh"
+#include "DetectorConstructionMessenger.hh"
 
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction(G4String filename, G4String dataset,
-                         G4int count, G4double smartless, G4double limit);
+    DetectorConstruction();
     ~DetectorConstruction();
 
     G4VPhysicalVolume* Construct();
     void UpdateParameterisation(G4ThreeVector position);
+
+  public:
+    void SetFilename(G4String filename) {
+        G4cout << "Setting filename: " << filename << G4endl;
+        this->filename = filename;
+    };
+
+    void SetDataset(G4String dataset) {
+        G4cout << "Setting dataset: " << dataset << G4endl;
+        this->dataset = dataset;
+    };
+
+    void SetCount(G4int count) {
+        this->count = count;
+    };
+
+    void SetSmartless(G4double smartless) {
+        this->smartless = smartless;
+    };
+
+    void SetLimit(G4double limit) {
+        this->limit = limit;
+    };
 
   public:
     G4Box* world_solid;
@@ -68,6 +91,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4int count;
     G4double smartless;
     G4double limit;
+
+    DetectorConstructionMessenger* messenger;
 };
 #endif
 

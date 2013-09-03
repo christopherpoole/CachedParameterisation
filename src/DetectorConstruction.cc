@@ -41,19 +41,22 @@
 #include "G4UserLimits.hh"
 
 
-DetectorConstruction::DetectorConstruction(G4String filename, G4String dataset,
-                                           G4int count, G4double smartless, G4double limit)
+DetectorConstruction::DetectorConstruction()
 {
-    this->filename = filename;
-    this->dataset = dataset;
-    this->count = count;
-    this->smartless = smartless;
-    this->limit = limit;
+    this->filename = "";
+    this->dataset = "";
+    this->count = 0;
+    this->smartless = 2.0;
+    this->limit = 0;
+
+    // Messenger
+    messenger = new DetectorConstructionMessenger(this);
 }
 
 
 DetectorConstruction::~DetectorConstruction()
 {
+    delete messenger;
 }
 
 
@@ -71,7 +74,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_logical->SetSmartless(smartless);
 
     // User Limits
-    G4UserLimits* step_limit = new G4UserLimits(limit*mm);
+    G4UserLimits* step_limit = new G4UserLimits(limit);
     world_logical->SetUserLimits(step_limit);
 
     parameterisation = new CachedParameterisation(filename, dataset);
@@ -90,6 +93,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     return world_physical;
 }
+
 
 void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
     parameterisation->ComputeNeighbors(position, 10);

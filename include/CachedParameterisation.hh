@@ -72,7 +72,7 @@ class CachedParameterisation : public G4VPVParameterisation{
     int GetSize() {
         return this->size;
     };
-    
+   
   private:
     G4int size;
 
