@@ -68,14 +68,21 @@ G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_
 }; 
 
 void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
-    double p[3];
-    p[0] = position.x();
-    p[1] = position.y(); 
-    p[2] = position.z();
-    SpatialIndex::Point point = SpatialIndex::Point(p, 3);
+    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
+
+    if (this->x.size() > 0) { 
+        // If we are still in the current region, don't load another one.
+        if (this->visitor.region.containsPoint(point))
+                return;
+    }
 
     Visitor visitor;
     rstar_tree->nearestNeighborQuery(number, point, visitor);
+    
+    // Operate on comparisons between the current and previous
+    // visitor region here...
+
+    this->visitor = visitor;
 
     this->x = visitor.x;
     this->y = visitor.y;
