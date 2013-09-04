@@ -48,6 +48,8 @@ class CacheBase
     };
 
     ~CacheBase() {
+        delete index;
+        delete cache;
     };
 
     virtual void push(K key, V value) {
