@@ -29,10 +29,15 @@
 #ifndef DataStream_h
 #define DataStream_h 1
 
+// USER //
+#include "Helpers.hh"
+
 // GEANT4 //
 #include "globals.hh"
 
 // SpatialIndex //
+#include "spatialindex/Point.h"
+#include "spatialindex/Region.h"
 #include "spatialindex/SpatialIndex.h"
 #define INSERT 1
 #define DELETE 0
@@ -137,7 +142,6 @@ public:
 
 public:
 	Visitor() : m_indexIO(0), m_leafIO(0) {
-    
     }
 
 	void visitNode(const SpatialIndex::INode& n)
@@ -148,9 +152,24 @@ public:
 
 	void visitData(const SpatialIndex::IData& d)
 	{
-        SpatialIndex::IShape* pS;
-		d.getShape(&pS);
-		delete pS;
+        SpatialIndex::IShape* shape;
+		d.getShape(&shape);
+
+        SpatialIndex::Region bounding_box;
+        shape->getMBR(bounding_box);
+
+        if (copy_number.size() > 0) {
+            bounding_box_lower = Helpers::FindLowerBound(
+                    Helpers::GetLowerPoint(bounding_box), bounding_box_lower);
+            bounding_box_upper = Helpers::FindUpperBound(
+                    Helpers::GetUpperPoint(bounding_box), bounding_box_upper);
+        } else {
+            bounding_box_lower = Helpers::GetLowerPoint(bounding_box);
+            bounding_box_upper = Helpers::GetLowerPoint(bounding_box);
+        }
+
+        delete shape;
+
 
 		byte* pData = 0;
 		uint32_t cLen = 0;
@@ -178,6 +197,9 @@ public:
     std::vector<double> y;
     std::vector<double> z;
     std::vector<double> r;
+        
+    SpatialIndex::Point bounding_box_lower;
+    SpatialIndex::Point bounding_box_upper;
 };
 
 #endif
