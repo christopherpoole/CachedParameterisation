@@ -55,6 +55,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     
     G4ThreeVector current_position = step->GetPostStepPoint()->GetPosition();
-    detector_construction->UpdateParameterisation(current_position);
+    bool update = detector_construction->UpdateParameterisation(current_position);
 }
 

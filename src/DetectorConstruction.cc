@@ -97,11 +97,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 }
 
 
-void DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    parameterisation->ComputeNeighbors(position, count);
-    replication->SetNoReplicas(parameterisation->GetSize());
+bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
+    bool update = parameterisation->ComputeNeighbors(position, count);
+    
+    if (update) {
+        replication->SetNoReplicas(parameterisation->GetSize());
 
-    G4RunManager::GetRunManager()->GeometryHasBeenModified();
-    G4VVisManager::GetConcreteInstance()->GeometryHasChanged();
+        G4RunManager::GetRunManager()->GeometryHasBeenModified();
+        G4VVisManager::GetConcreteInstance()->GeometryHasChanged();
+    }
+
+    return update;
 };
 

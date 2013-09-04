@@ -67,13 +67,13 @@ G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_
             const G4int copy_number, const G4VTouchable *parent_touchable) {
 }; 
 
-void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
+bool CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
     SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
 
     if (this->x.size() > 0) { 
         // If we are still in the current region, don't load another one.
         if (this->visitor.region.containsPoint(point))
-                return;
+                return false;
     }
 
     Visitor visitor;
@@ -89,6 +89,8 @@ void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int numb
     this->z = visitor.z;
 
     this->size = x.size();
+
+    return true;
 };
 
 
