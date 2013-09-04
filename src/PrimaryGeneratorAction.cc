@@ -62,6 +62,8 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
+    G4cout << G4endl << "PrimaryGeneratorAction::GeneratePrimaries " << event->GetEventID() << G4endl;
+
     particle_gun->SetParticleMomentumDirection(
             G4ThreeVector(G4UniformRand(), G4UniformRand(), G4UniformRand()));
 

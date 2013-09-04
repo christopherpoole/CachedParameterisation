@@ -51,6 +51,8 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
+    G4cout << G4endl << "SteppingAction::UserSteppingAction" << G4endl;
+
     DetectorConstruction * detector_construction = (DetectorConstruction*)
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     

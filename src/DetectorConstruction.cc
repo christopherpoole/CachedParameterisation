@@ -104,19 +104,24 @@ bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
 {
     bool update;
     bool outside = parameterisation->OutsideOfCurrentRegion(position);
-    
+   
     if (outside) {
+        G4cout << "DetectorConstruction::UpdateParameterisation OUTSIDE" << G4endl;
+
         CachedParameterisation* param = parameterisation_cache->pull(position);
         if (param == NULL) {
+            G4cout << "DetectorConstruction::UpdateParameterisation NEW" << G4endl;
             param = new CachedParameterisation(*parameterisation);
             param->ComputeNeighbors(position, count);
             parameterisation_cache->push(position, param);
         } else {
+            G4cout << "DetectorConstruction::UpdateParameterisation CACHED" << G4endl;
             parameterisation = param;
         }
         replication->SetNoReplicas(parameterisation->GetSize());
         update = true;
     } else {
+        G4cout << "DetectorConstruction::UpdateParameterisation INSIDE" << G4endl;
         update = false;
     }
    
