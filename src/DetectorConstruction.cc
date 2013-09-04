@@ -52,7 +52,7 @@ DetectorConstruction::DetectorConstruction()
     this->limit = 0;
 
     // Initialise LRU Cache
-    parameterisation_cache = new Cache(10);
+    parameterisation_cache = new Cache<G4ThreeVector, CachedParameterisation*>(10);
 
     // Messenger
     messenger = new DetectorConstructionMessenger(this);
@@ -101,8 +101,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    bool update = parameterisation->ComputeNeighbors(position, count);
+    parameterisation_cache->push(position, parameterisation);
     
+    bool update = parameterisation->ComputeNeighbors(position, count);
+   
+
     if (update) {
         replication->SetNoReplicas(parameterisation->GetSize());
 

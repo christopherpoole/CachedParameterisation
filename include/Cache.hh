@@ -32,30 +32,61 @@
 // GEANT4 //
 #include "globals.hh"
 
-// LRU Cache
-#include "lru_cache.h"
-
 // USER //
 #include "Helpers.hh"
-#include "CachedParameterisation.hh"
 
 
+template<class K, class V>
 class Cache 
 {
   public:
-    Cache(unsigned int size) {
-        this->size = size;
+    Cache(unsigned int max_size) {
+        this->max_size = max_size;
 
-        lru_cache = new LRUCache<G4ThreeVector, CachedParameterisation*>(size);
+        index = new std::list<K>();
+        cache = new std::map<K, V>();
     };
 
     ~Cache() {
     };
 
-  public:
-    unsigned int size;
+    void push(K key, V value) {
+        // Remove if K:V exists
+        pop(key);
+        
+        // Put K:V at the top of the list
+        cache->insert(std::make_pair(key, value));
+        index->push_front(key);
+       
+        // If the cache is oversize, remove the least used K:V 
+        if (index->size() > max_size) {
+            pop(index->back());
+        }
+    };
 
-    LRUCache<G4ThreeVector, CachedParameterisation*>* lru_cache;
+    V pull(K key) {
+        if (exists(key)) {
+            return cache[key];
+        } else {
+            return NULL;
+        }
+    };
+    void pop(K key) {
+        if (exists(key)) {
+            cache->erase(key);
+            index->remove(key);
+        }
+    };
+
+    bool exists(K key) {
+        return cache->find(key) != cache->end();
+    };
+
+  protected:
+    unsigned int max_size;
+
+    std::list<K>* index;
+    std::map<K, V>* cache;
 };
 
 #endif

@@ -83,7 +83,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume* world_logical;
     G4VPhysicalVolume* world_physical;
 
-    Cache* parameterisation_cache;    
+    Cache<G4ThreeVector, CachedParameterisation*>* parameterisation_cache;
     CachedParameterisation* parameterisation;
     G4PVParameterised* replication;
 
