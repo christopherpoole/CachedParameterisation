@@ -92,14 +92,41 @@ class CacheBase
 };
 
 
+#include <limits>
 #include "CachedParameterisation.hh"
 
 
 class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
 {
   public:
-    Cache(unsigned int max_size) : CacheBase(max_size) {
+    Cache(unsigned int max_size, double threshold) : CacheBase(max_size) {
+        this->threshold = threshold;
     }; 
+
+    CachedParameterisation* pull(G4ThreeVector key) {
+        // TODO: use a KD-tree instead of testing each key.
+        // Find the closest key that is within this->threshold
+        
+        double distance = std::numeric_limits<double>::infinity();
+        G4ThreeVector closest = G4ThreeVector();
+
+        for (std::list<G4ThreeVector>::iterator it=index->begin();
+                                                it!=index->end(); ++it) {
+            double d = abs(key.howNear(*it));
+            if (d < distance) {
+                closest = *it;
+                distance = d;
+            }
+        }
+        
+        if (distance <= threshold)
+            key = closest;
+        
+        return CacheBase::pull(key);
+    };
+
+  private:
+    double threshold;
 };
 
 #endif
