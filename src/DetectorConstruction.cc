@@ -100,15 +100,27 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 }
 
 
-bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position) {
-    parameterisation_cache->push(position, parameterisation);
+bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
+{
+    bool update;
+    bool outside = parameterisation->OutsideOfCurrentRegion(position);
     
-    bool update = parameterisation->ComputeNeighbors(position, count);
-   
-
-    if (update) {
+    if (outside) {
+        CachedParameterisation* param = parameterisation_cache->pull(position);
+        if (param == NULL) {
+            param = new CachedParameterisation(*parameterisation);
+            param->ComputeNeighbors(position, count);
+            parameterisation_cache->push(position, param);
+        } else {
+            parameterisation = param;
+        }
         replication->SetNoReplicas(parameterisation->GetSize());
-
+        update = true;
+    } else {
+        update = false;
+    }
+   
+    if (update) { 
         G4RunManager::GetRunManager()->GeometryHasBeenModified();
         G4VVisManager::GetConcreteInstance()->GeometryHasChanged();
     }
