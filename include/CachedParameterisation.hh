@@ -44,6 +44,7 @@
 #include "lru_cache.h"
 
 // USER //
+#include "Helpers.hh"
 #include "DataStream.hh"
 
 
@@ -83,6 +84,7 @@ class CachedParameterisation : public G4VPVParameterisation{
     SpatialIndex::IStorageManager* rstar_file;
     SpatialIndex::StorageManager::IBuffer* rstar_buffer;
     SpatialIndex::ISpatialIndex* rstar_tree;
+    Visitor visitor;
 
     // Data on disk
     DataStream* stream;
