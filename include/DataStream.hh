@@ -159,13 +159,11 @@ public:
         shape->getMBR(bounding_box);
 
         if (copy_number.size() > 0) {
-            bounding_box_lower = Helpers::FindLowerBound(
-                    Helpers::GetLowerPoint(bounding_box), bounding_box_lower);
-            bounding_box_upper = Helpers::FindUpperBound(
-                    Helpers::GetUpperPoint(bounding_box), bounding_box_upper);
+            region.combinePoint(Helpers::GetLowerPoint(bounding_box));
+            region.combinePoint(Helpers::GetUpperPoint(bounding_box));
         } else {
-            bounding_box_lower = Helpers::GetLowerPoint(bounding_box);
-            bounding_box_upper = Helpers::GetLowerPoint(bounding_box);
+            region = SpatialIndex::Region(Helpers::GetLowerPoint(bounding_box),
+                                          Helpers::GetUpperPoint(bounding_box));
         }
 
         delete shape;
@@ -198,8 +196,7 @@ public:
     std::vector<double> z;
     std::vector<double> r;
         
-    SpatialIndex::Point bounding_box_lower;
-    SpatialIndex::Point bounding_box_upper;
+    SpatialIndex::Region region;
 };
 
 #endif
