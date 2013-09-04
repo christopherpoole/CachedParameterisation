@@ -52,7 +52,7 @@ DetectorConstruction::DetectorConstruction()
     this->limit = 0;
 
     // Initialise LRU Cache
-    parameterisation_cache = new Cache(10, 1.0);
+    parameterisation_cache = new Cache(10, 2.0);
 
     // Messenger
     messenger = new DetectorConstructionMessenger(this);
