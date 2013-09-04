@@ -37,20 +37,20 @@
 
 
 template<class K, class V>
-class Cache 
+class CacheBase
 {
   public:
-    Cache(unsigned int max_size) {
+    CacheBase(unsigned int max_size) {
         this->max_size = max_size;
 
         index = new std::list<K>();
         cache = new std::map<K, V>();
     };
 
-    ~Cache() {
+    ~CacheBase() {
     };
 
-    void push(K key, V value) {
+    virtual void push(K key, V value) {
         // Remove if K:V exists
         pop(key);
         
@@ -64,14 +64,14 @@ class Cache
         }
     };
 
-    V pull(K key) {
+    virtual V pull(K key) {
         if (exists(key)) {
-            return cache[key];
+            return cache->at(key);
         } else {
             return NULL;
         }
     };
-    void pop(K key) {
+    virtual void pop(K key) {
         if (exists(key)) {
             cache->erase(key);
             index->remove(key);
@@ -87,6 +87,17 @@ class Cache
 
     std::list<K>* index;
     std::map<K, V>* cache;
+};
+
+
+#include "CachedParameterisation.hh"
+
+
+class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
+{
+  public:
+    Cache(unsigned int max_size) : CacheBase(max_size) {
+    }; 
 };
 
 #endif
