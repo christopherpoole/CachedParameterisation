@@ -51,6 +51,9 @@ DetectorConstruction::DetectorConstruction()
     this->smartless = 2.0;
     this->limit = 0;
 
+    // Initialise LRU Cache
+    parameterisation_cache = new Cache(10);
+
     // Messenger
     messenger = new DetectorConstructionMessenger(this);
 }

@@ -40,8 +40,8 @@
 #include "G4PVPlacement.hh"
 #include "G4PVParameterised.hh"
 
-
 // USER //
+#include "Cache.hh"
 #include "CachedParameterisation.hh"
 #include "DetectorConstructionMessenger.hh"
 
@@ -82,7 +82,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4Box* world_solid;
     G4LogicalVolume* world_logical;
     G4VPhysicalVolume* world_physical;
-    
+
+    Cache* parameterisation_cache;    
     CachedParameterisation* parameterisation;
     G4PVParameterised* replication;
 
