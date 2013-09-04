@@ -64,6 +64,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
     particle_gun->SetParticleMomentumDirection(
             G4ThreeVector(G4UniformRand(), G4UniformRand(), G4UniformRand()));
+
+    detector_construction->UpdateParameterisation(particle_gun->GetParticlePosition());
+
     particle_gun->GeneratePrimaryVertex(event);
 }
 
