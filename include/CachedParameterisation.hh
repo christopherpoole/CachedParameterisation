@@ -48,6 +48,7 @@
 class CachedParameterisation : public G4VPVParameterisation{
   public:
     CachedParameterisation(G4String filename, G4String dataset);
+    CachedParameterisation(CachedParameterisation& other);
     ~CachedParameterisation();
 
   public:
@@ -61,7 +62,8 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4Material* ComputeMaterial(G4VPhysicalVolume *physical_volume,
             const G4int copy_number, const G4VTouchable *parent_touchable);
  
-    bool ComputeNeighbors(G4ThreeVector position, G4int number);
+    void ComputeNeighbors(G4ThreeVector position, G4int number);
+    bool OutsideOfCurrentRegion(G4ThreeVector position);
 
   private:
     void BuildRTree();

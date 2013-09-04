@@ -42,6 +42,18 @@ CachedParameterisation::CachedParameterisation(G4String filename, G4String datas
     BuildRTree(); 
 }
 
+
+CachedParameterisation::CachedParameterisation(CachedParameterisation& other) 
+{
+    this->x = std::vector<double>(other.x);
+    this->y = std::vector<double>(other.y);
+    this->z = std::vector<double>(other.z);
+    this->r = std::vector<double>(other.r);
+
+    rstar_tree = other.rstar_tree;
+}
+
+
 CachedParameterisation::~CachedParameterisation()
 {
 }
@@ -62,15 +74,20 @@ G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_
             const G4int copy_number, const G4VTouchable *parent_touchable) {
 }; 
 
-bool CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
-    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
 
+bool CachedParameterisation::OutsideOfCurrentRegion(G4ThreeVector position) {
+    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
     if (this->x.size() > 0) { 
         // If we are still in the current region, don't load another one.
         if (this->visitor.region.containsPoint(point))
                 return false;
     }
+    return true;
+}
 
+void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
+    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
+    
     Visitor visitor;
     rstar_tree->nearestNeighborQuery(number, point, visitor);
     
@@ -84,8 +101,6 @@ bool CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int numb
     this->z = visitor.z;
 
     this->size = x.size();
-
-    return true;
 };
 
 
