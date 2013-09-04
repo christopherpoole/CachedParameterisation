@@ -35,9 +35,6 @@ CachedParameterisation::CachedParameterisation(G4String filename, G4String datas
     this->do_transform = true;
     this->do_dimensions = false;
 
-    // Initialise LRU cache
-    voxel_cache = new LRUCache<int, int>(10);
-
     // Initialise access to data on disk
     stream = new DataStream(filename, dataset);
     this->size = stream->size();
@@ -59,8 +56,6 @@ void CachedParameterisation::ComputeTransformation(const G4int copy_number,
     
     G4ThreeVector origin = G4ThreeVector(x, y, z);
     physical_volume->SetTranslation(origin);
-
-    voxel_cache->insert(copy_number, copy_number);
 }
 
 G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,
