@@ -73,6 +73,7 @@ class CacheBase
             return NULL;
         }
     };
+
     virtual void pop(K key) {
         if (exists(key)) {
             cache->erase(key);
@@ -114,7 +115,7 @@ class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
     };
 
     G4ThreeVector nearest_key(G4ThreeVector key) {
-   // TODO: use a KD-tree instead of testing each key.
+        // TODO: use a KD-tree instead of testing each key.
         // Find the closest key that is within this->threshold
         
         double distance = std::numeric_limits<double>::infinity();
@@ -122,13 +123,14 @@ class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
 
         for (std::list<G4ThreeVector>::iterator it=index->begin();
                                                 it!=index->end(); ++it) {
-            double d = abs(key.howNear(*it));
-            if (d < distance) {
+            double d = (key - *it).mag();
+            if (d <= threshold) {
                 nearest = *it;
                 distance = d;
+                break;
             }
         }
- 
+
         if (distance <= threshold) {
             return nearest;
         } else {
