@@ -43,9 +43,18 @@ namespace Helpers {
 G4ThreeVector PointToG4ThreeVector(SpatialIndex::Point point);
 SpatialIndex::Point G4ThreeVectorToPoint(G4ThreeVector vector);
 
+SpatialIndex::Point GetLowerPoint(SpatialIndex::Region region);
+SpatialIndex::Point GetUpperPoint(SpatialIndex::Region region);
+
 G4ThreeVector GetLowerPointAsG4ThreeVector(SpatialIndex::Region region);
 G4ThreeVector GetUpperPointAsG4ThreeVector(SpatialIndex::Region region);
 
+G4ThreeVector GetCenterAsG4ThreeVector(SpatialIndex::Region region);
+
+SpatialIndex::Point FindBound(double (*f)(double, double),
+                              SpatialIndex::Point first, SpatialIndex::Point second);
+SpatialIndex::Point FindLowerBound(SpatialIndex::Point first, SpatialIndex::Point second);
+SpatialIndex::Point FindUpperBound(SpatialIndex::Point first, SpatialIndex::Point second);
 }
 
 #endif // HELPERS_H

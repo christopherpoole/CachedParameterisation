@@ -48,17 +48,73 @@ SpatialIndex::Point G4ThreeVectorToPoint(G4ThreeVector vector) {
 }
 
 
+SpatialIndex::Point GetLowerPoint(SpatialIndex::Region region) {
+    unsigned int dim = region.getDimension();
+    std::vector<double> p;
+
+    for (unsigned int i=0; i<dim; i++) {
+        p.push_back(region.getLow(i));
+    }
+
+    return SpatialIndex::Point(&p[0], dim);    
+}
+
+
+SpatialIndex::Point GetUpperPoint(SpatialIndex::Region region) {
+    unsigned int dim = region.getDimension();
+    std::vector<double> p;
+
+    for (unsigned int i=0; i<dim; i++) {
+        p.push_back(region.getHigh(i));
+    }
+
+    return SpatialIndex::Point(&p[0], dim);    
+}
+
+
 G4ThreeVector GetLowerPointAsG4ThreeVector(SpatialIndex::Region region) {
-    return G4ThreeVector(region.getLow(0),
-                         region.getLow(1),
-                         region.getLow(2));
+    // TODO: Assert region.dim == 3
+    return PointToG4ThreeVector(GetLowerPoint(region));
 }
 
 
 G4ThreeVector GetUpperPointAsG4ThreeVector(SpatialIndex::Region region) {
-    return G4ThreeVector(region.getHigh(0),
-                         region.getHigh(1),
-                         region.getHigh(2));
+    // TODO: Assert region.dim == 3
+    return PointToG4ThreeVector(GetUpperPoint(region));
+}
+
+
+G4ThreeVector GetCenterAsG4ThreeVector(SpatialIndex::Region region) {
+    SpatialIndex::Point point;
+    region.getCenter(point);
+
+    return PointToG4ThreeVector(point);
+}
+
+
+SpatialIndex::Point FindBound(const double& (*f)(const double&, const double&),
+                                   SpatialIndex::Point first, SpatialIndex::Point second) {
+    // TODO: Assert first.dimension == second.dimesion
+    
+    unsigned int dim = first.getDimension();
+    std::vector<double> p;
+
+    for (unsigned int i=0; i<dim; i++) {
+        double coordinate = (*f)(first.getCoordinate(i), second.getCoordinate(i));
+        p.push_back(coordinate);
+    }
+    
+    return SpatialIndex::Point(&p[0], dim);
+}
+
+
+SpatialIndex::Point FindLowerBound(SpatialIndex::Point first, SpatialIndex::Point second) {
+    return FindBound(std::min, first, second);
+}
+
+
+SpatialIndex::Point FindUpperBound(SpatialIndex::Point first, SpatialIndex::Point second) {
+    return FindBound(std::max, first, second);
 }
 
 }
