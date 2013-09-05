@@ -41,6 +41,13 @@ class SteppingAction : public G4UserSteppingAction
     virtual ~SteppingAction();
 
     virtual void UserSteppingAction(const G4Step* step);
+
+    void SetVerbosity(bool verbose) {
+        this->verbose = verbose;
+    };
+
+  public:
+    bool verbose;
 };
 
 

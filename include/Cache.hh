@@ -42,6 +42,7 @@ class CacheBase
   public:
     CacheBase(unsigned int max_size) {
         this->max_size = max_size;
+        this->verbose = false;
 
         index = new std::list<K>();
         cache = new std::map<K, V>();
@@ -53,7 +54,8 @@ class CacheBase
     };
 
     virtual void push(K key, V value) {
-        G4cout << "Cache::push " << key << G4endl;
+        if (verbose)
+            G4cout << "Cache::push " << key << G4endl;  
 
         // Remove if K:V exists
         pop(key);
@@ -69,7 +71,8 @@ class CacheBase
     };
 
     virtual V pull(K key) {
-        G4cout << "Cache::pull " << key << G4endl;
+        if (verbose)
+            G4cout << "Cache::pull " << key << G4endl;
 
         if (exists(key)) {
             return cache->at(key);
@@ -79,7 +82,8 @@ class CacheBase
     };
 
     virtual void pop(K key) {
-        G4cout << "Cache::pop " << key << G4endl;
+        if (verbose)
+            G4cout << "Cache::pop " << key << G4endl;
 
         if (exists(key)) {
             cache->erase(key);
@@ -88,7 +92,8 @@ class CacheBase
     };
 
     bool exists(K key) {
-        G4cout << "Cache::exists " << key << G4endl;
+        if (verbose)
+            G4cout << "Cache::exists " << key << G4endl;
 
         return cache->find(key) != cache->end();
     };
@@ -97,8 +102,13 @@ class CacheBase
         this->max_size = size;
     };
 
+    void SetVerbosity(bool verbose) {
+        this->verbose = verbose;
+    }
+
   protected:
     unsigned int max_size;
+    bool verbose;
 
     std::list<K>* index;
     std::map<K, V>* cache;

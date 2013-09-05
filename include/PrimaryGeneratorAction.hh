@@ -38,16 +38,22 @@ class DetectorConstruction;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-    public:
-        PrimaryGeneratorAction();
-        ~PrimaryGeneratorAction();
+  public:
+    PrimaryGeneratorAction();
+    ~PrimaryGeneratorAction();
 
-    public:
-        void GeneratePrimaries(G4Event* event);
+  public:
+    void GeneratePrimaries(G4Event* event);
 
-    private:
-        G4ParticleGun* particle_gun;
-        DetectorConstruction* detector_construction;
+    void SetVerbosity(bool verbose) {
+        this->verbose = verbose;
+    };
+
+  private:
+    G4ParticleGun* particle_gun;
+    DetectorConstruction* detector_construction;
+
+    bool verbose;
 };
 
 #endif

@@ -82,6 +82,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         parameterisation_cache->SetSize(size);
     };
 
+    void SetVerbosity(bool verbose) {
+        this->verbose = verbose;
+    };
+
   public:
     G4Box* world_solid;
     G4LogicalVolume* world_logical;
@@ -96,6 +100,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4int count;
     G4double smartless;
     G4double limit;
+    bool verbose;
 
     DetectorConstructionMessenger* messenger;
 };
