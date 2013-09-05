@@ -75,7 +75,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_logical = new G4LogicalVolume(world_solid, air, "world_logical", 0, 0, 0);
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
-    world_logical->SetVisAttributes(G4VisAttributes::Invisible);
+    //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
     world_logical->SetSmartless(smartless);
 
     // User Limits
@@ -117,6 +117,7 @@ bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
         } else {
             G4cout << "DetectorConstruction::UpdateParameterisation CACHED" << G4endl;
             parameterisation = param;
+            replication->SetParameterisation(param);
         }
         replication->SetNoReplicas(parameterisation->GetSize());
         update = true;
