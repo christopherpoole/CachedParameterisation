@@ -114,12 +114,15 @@ class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
 
     CachedParameterisation* pull(G4ThreeVector key) {
         G4ThreeVector nearest = nearest_key(key);
+        CachedParameterisation* param;
   
         if (nearest == key) {
-            return NULL;
+            param = NULL;
         } else {
-            return CacheBase::pull(nearest);
+            param = CacheBase::pull(nearest);
         }
+        
+        return param;
     };
 
     G4ThreeVector nearest_key(G4ThreeVector key) {
