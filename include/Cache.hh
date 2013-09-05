@@ -114,7 +114,7 @@ class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
 
     CachedParameterisation* pull(G4ThreeVector key) {
         G4ThreeVector nearest = nearest_key(key);
-
+  
         if (nearest == key) {
             return NULL;
         } else {
@@ -144,6 +144,18 @@ class Cache : public CacheBase<G4ThreeVector, CachedParameterisation*>
         } else {
             return key; 
         }
+    };
+
+    void dump() {
+        for (std::list<G4ThreeVector>::iterator it=index->begin();
+                                                it!=index->end(); ++it) {
+            G4cout << "Entry: " << *it << G4endl; 
+
+            CachedParameterisation* param = CacheBase::pull(*it);
+            for (unsigned int i=0; i<param->GetSize(); i++) {
+                G4cout << "   " << param->GetPosition(i) << G4endl;
+            }
+        } 
     };
 
   private:
