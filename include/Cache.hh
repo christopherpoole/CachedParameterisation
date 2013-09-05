@@ -93,6 +93,10 @@ class CacheBase
         return cache->find(key) != cache->end();
     };
 
+    void SetSize(unsigned int size) {
+        this->max_size = size;
+    };
+
   protected:
     unsigned int max_size;
 

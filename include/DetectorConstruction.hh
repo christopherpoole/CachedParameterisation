@@ -78,6 +78,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         this->limit = limit;
     };
 
+    void SetCacheSize(unsigned int size) {
+        parameterisation_cache->SetSize(size);
+    };
+
   public:
     G4Box* world_solid;
     G4LogicalVolume* world_logical;

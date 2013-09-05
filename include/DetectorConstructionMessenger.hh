@@ -57,6 +57,7 @@ class DetectorConstructionMessenger: public G4UImessenger
     G4UIcmdWithAString* set_filename;
     G4UIcmdWithAString* set_dataset;
     G4UIcmdWithAnInteger* set_count;
+    G4UIcmdWithAnInteger* set_cache_size;
     G4UIcmdWithADouble* set_smartless;
     G4UIcmdWithADoubleAndUnit* set_limit;
     

@@ -60,6 +60,12 @@ DetectorConstructionMessenger::DetectorConstructionMessenger(DetectorConstructio
     set_count->SetRange("count >= 0");
     set_count->AvailableForStates(G4State_PreInit);  
 
+    set_cache_size = new G4UIcmdWithAnInteger("/CachedParam/SetCacheSize", this);  
+    set_cache_size->SetGuidance("Set the maximum number of entrys in the cache.");
+    set_cache_size->SetParameterName("size", false);
+    set_cache_size->SetRange("size >= 0");
+    set_cache_size->AvailableForStates(G4State_PreInit);  
+
     set_smartless = new G4UIcmdWithADouble("/CachedParam/SetSmartless", this);  
     set_smartless->SetGuidance("Set the smartless for the replica mother volume.");
     set_smartless->SetParameterName("smartless", false);
@@ -85,6 +91,7 @@ DetectorConstructionMessenger::~DetectorConstructionMessenger()
     delete set_filename;
     delete set_dataset;
     delete set_count;
+    delete set_cache_size;
     delete set_smartless;
     delete set_limit;
 
@@ -102,6 +109,9 @@ void DetectorConstructionMessenger::SetNewValue(G4UIcommand* command, G4String v
 
     if (command == set_count) 
         detector_construction->SetCount(set_count->GetNewIntValue(value));
+
+    if (command == set_cache_size) 
+        detector_construction->SetCacheSize(set_count->GetNewIntValue(value));
 
     if (command == set_smartless)
         detector_construction->SetSmartless(set_smartless->GetNewDoubleValue(value));
