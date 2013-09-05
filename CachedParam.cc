@@ -82,7 +82,7 @@ int main(int, char** argv)
     G4UIsession* session = new G4UIterminal(new G4UItcsh);
     G4String command = "/control/execute ";
     UI->ApplyCommand(command + argv[1]);
-    session->SessionStart();
+    //session->SessionStart();
 
     delete session;
     delete vis_manager;
