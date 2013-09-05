@@ -72,8 +72,14 @@ class CachedParameterisation : public G4VPVParameterisation{
     int GetSize() {
         return this->size;
     };
-   
-  private:
+
+    G4ThreeVector GetPosition(unsigned int copy_number) {
+        return G4ThreeVector(this->x[copy_number],
+                             this->y[copy_number],
+                             this->z[copy_number]);
+    };
+
+  public:
     G4int size;
 
     G4bool do_transform;
