@@ -72,6 +72,11 @@ DetectorConstructionMessenger::DetectorConstructionMessenger(DetectorConstructio
     set_limit->SetUnitCategory("Length");
     set_limit->SetRange("limit > 0.0");
     set_limit->AvailableForStates(G4State_PreInit);  
+
+    dump_cache = new G4UIcmdWithAString("/CachedParam/DumpCache", this);  
+    dump_cache->SetGuidance("Dump the parameterisation cache.");
+    dump_cache->SetParameterName("operation", true);
+    dump_cache->AvailableForStates(G4State_Idle);  
 }
 
 
@@ -82,6 +87,8 @@ DetectorConstructionMessenger::~DetectorConstructionMessenger()
     delete set_count;
     delete set_smartless;
     delete set_limit;
+
+    delete dump_cache;
 }
 
 
@@ -101,5 +108,8 @@ void DetectorConstructionMessenger::SetNewValue(G4UIcommand* command, G4String v
 
     if (command == set_limit)
         detector_construction->SetLimit(set_limit->GetNewDoubleValue(value));
+
+    if (command == dump_cache)
+        detector_construction->parameterisation_cache->dump();
 }
 
