@@ -37,12 +37,9 @@
 #include "globals.hh"
 #include "Randomize.hh"
 
-// SpatialIndex //
-#include "spatialindex/SpatialIndex.h"
-
 // USER //
 #include "Helpers.hh"
-#include "DataStream.hh"
+#include "Neighbourhood.hh"
 
 
 class CachedParameterisation : public G4VPVParameterisation{
@@ -65,9 +62,6 @@ class CachedParameterisation : public G4VPVParameterisation{
     void ComputeNeighbors(G4ThreeVector position, G4int number);
     bool OutsideOfCurrentRegion(G4ThreeVector position);
 
-  private:
-    void BuildRTree();
-
   public:
     int GetSize() {
         return this->size;
@@ -85,14 +79,7 @@ class CachedParameterisation : public G4VPVParameterisation{
     G4bool do_transform;
     G4bool do_dimensions;
 
-    // SpatialIndex R* Tree //
-    SpatialIndex::IStorageManager* rstar_file;
-    SpatialIndex::StorageManager::IBuffer* rstar_buffer;
-    SpatialIndex::ISpatialIndex* rstar_tree;
-    Visitor visitor;
-
-    // Data on disk
-    DataStream* stream;
+    Neighbourhood* neighbourhood;
 
     std::vector<double> x;
     std::vector<double> y;

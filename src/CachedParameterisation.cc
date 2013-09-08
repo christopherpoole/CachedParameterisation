@@ -35,22 +35,19 @@ CachedParameterisation::CachedParameterisation(G4String filename, G4String datas
     this->do_transform = true;
     this->do_dimensions = false;
 
-    // Initialise access to data on disk
-    stream = new DataStream(filename, dataset);
-    this->size = stream->size();
-
-    BuildRTree(); 
+    this->neighbourhood = new Neighbourhood(filename, dataset);
+    this->size = neighbourhood->GetSize();
 }
 
 
 CachedParameterisation::CachedParameterisation(CachedParameterisation& other) 
 {
-    this->x = std::vector<double>(other.x);
-    this->y = std::vector<double>(other.y);
-    this->z = std::vector<double>(other.z);
-    this->r = std::vector<double>(other.r);
+    x = std::vector<double>(other.x);
+    y = std::vector<double>(other.y);
+    z = std::vector<double>(other.z);
+    r = std::vector<double>(other.r);
 
-    rstar_tree = other.rstar_tree;
+    neighbourhood = other.neighbourhood;
 }
 
 
@@ -70,32 +67,21 @@ void CachedParameterisation::ComputeTransformation(const G4int copy_number,
     physical_volume->SetTranslation(origin);
 }
 
+
 G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_volume,
             const G4int copy_number, const G4VTouchable *parent_touchable) {
 }; 
 
 
 bool CachedParameterisation::OutsideOfCurrentRegion(G4ThreeVector position) {
-    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
     if (this->x.size() > 0) { 
-        // If we are still in the current region, don't load another one.
-        if (this->visitor.region.containsPoint(point))
-                return false;
+        return neighbourhood->OutsideOfCurrentRegion(position);
     }
     return true;
 }
 
 void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
-    SpatialIndex::Point point = Helpers::G4ThreeVectorToPoint(position);
-    
-    Visitor visitor;
-    rstar_tree->nearestNeighborQuery(number, point, visitor);
-    
-    // Operate on comparisons between the current and previous
-    // visitor region here...
-
-    this->visitor = visitor;
-
+    Visitor visitor = neighbourhood->ComputeNeighbours(position, number);
     this->x = visitor.x;
     this->y = visitor.y;
     this->z = visitor.z;
@@ -103,28 +89,3 @@ void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int numb
     this->size = x.size();
 };
 
-
-void CachedParameterisation::BuildRTree() {
-    // Compute R* Tree
-    std::string name = "tree";
-    rstar_file = SpatialIndex::StorageManager::createNewDiskStorageManager(
-            name, 4096);
-    rstar_buffer = SpatialIndex::StorageManager::createNewRandomEvictionsBuffer(
-            *rstar_file, 10, false);
-
-    SpatialIndex::id_type indexIdentifier;
-    double fill_factor = 0.7;
-    int index_capacity = 100;
-    int leaf_capacity = 10;
-    double utilisation = 0.4;
-    int ndims = 3;
-
-    rstar_tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
-            SpatialIndex::RTree::BLM_STR, *stream, *rstar_file, utilisation,
-            index_capacity, leaf_capacity, ndims,
-            SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
-    
-    std::cerr << *rstar_tree;
-    std::cerr << "Buffer hits: " << rstar_buffer->getHits() << std::endl;
-    std::cerr << "Index ID: " << indexIdentifier << std::endl;
-};
