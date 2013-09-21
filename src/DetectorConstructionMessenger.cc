@@ -79,6 +79,12 @@ DetectorConstructionMessenger::DetectorConstructionMessenger(DetectorConstructio
     set_limit->SetRange("limit > 0.0");
     set_limit->AvailableForStates(G4State_PreInit);  
 
+    set_verbosity = new G4UIcmdWithAnInteger("/CachedParam/SetVerbosity", this);  
+    set_verbosity->SetGuidance("Set the level of debug output to print.");
+    set_verbosity->SetParameterName("verbosity", false);
+    set_verbosity->SetRange("verbosity >= 0");
+    set_count->AvailableForStates(G4State_PreInit);  
+
     dump_cache = new G4UIcmdWithAString("/CachedParam/DumpCache", this);  
     dump_cache->SetGuidance("Dump the parameterisation cache.");
     dump_cache->SetParameterName("operation", true);
@@ -94,6 +100,8 @@ DetectorConstructionMessenger::~DetectorConstructionMessenger()
     delete set_cache_size;
     delete set_smartless;
     delete set_limit;
+
+    delete set_verbosity;
 
     delete dump_cache;
 }
@@ -118,6 +126,9 @@ void DetectorConstructionMessenger::SetNewValue(G4UIcommand* command, G4String v
 
     if (command == set_limit)
         detector_construction->SetLimit(set_limit->GetNewDoubleValue(value));
+
+    if (command == set_verbosity) 
+        detector_construction->SetVerbosity(set_verbosity->GetNewIntValue(value));
 
     if (command == dump_cache)
         detector_construction->parameterisation_cache->dump();

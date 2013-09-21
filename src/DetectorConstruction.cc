@@ -50,7 +50,7 @@ DetectorConstruction::DetectorConstruction()
     this->count = 0;
     this->smartless = 2.0;
     this->limit = 0;
-    this->verbose = false;
+    this->verbose = 0;
 
     // Initialise LRU Cache
     parameterisation_cache = new Cache(10, 2.0);
@@ -107,18 +107,18 @@ bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
     bool outside = parameterisation->OutsideOfCurrentRegion(position);
    
     if (outside) {
-        if (verbose)
+        if (verbose >= 2)
             G4cout << "DetectorConstruction::UpdateParameterisation OUTSIDE" << G4endl;
 
         CachedParameterisation* param = parameterisation_cache->pull(position);
         if (param == NULL) {
-            if (verbose)
+            if (verbose >= 2)
                 G4cout << "DetectorConstruction::UpdateParameterisation NEW" << G4endl;
             param = new CachedParameterisation(*parameterisation);
             param->ComputeNeighbors(position, count);
             parameterisation_cache->push(position, param);
         } else {
-            if (verbose)
+            if (verbose >= 2)
                 G4cout << "DetectorConstruction::UpdateParameterisation CACHED" << G4endl;
             parameterisation = param;
             replication->SetParameterisation(param);
@@ -126,7 +126,7 @@ bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
         replication->SetNoReplicas(parameterisation->GetSize());
         update = true;
     } else {
-        if (verbose)
+        if (verbose >= 2)
             G4cout << "DetectorConstruction::UpdateParameterisation INSIDE" << G4endl;
         update = false;
     }

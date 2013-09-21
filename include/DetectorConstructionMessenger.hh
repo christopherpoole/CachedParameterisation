@@ -61,6 +61,8 @@ class DetectorConstructionMessenger: public G4UImessenger
     G4UIcmdWithADouble* set_smartless;
     G4UIcmdWithADoubleAndUnit* set_limit;
     
+    G4UIcmdWithAnInteger* set_verbosity;
+    
     G4UIcmdWithAString* dump_cache;
 };
 

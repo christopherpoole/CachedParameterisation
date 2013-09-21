@@ -78,11 +78,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         this->limit = limit;
     };
 
-    void SetCacheSize(unsigned int size) {
+    void SetCacheSize(G4int size) {
         parameterisation_cache->SetSize(size);
     };
 
-    void SetVerbosity(bool verbose) {
+    void SetVerbosity(G4int verbose) {
         this->verbose = verbose;
     };
 
@@ -100,7 +100,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4int count;
     G4double smartless;
     G4double limit;
-    bool verbose;
+    G4int verbose;
 
     DetectorConstructionMessenger* messenger;
 };
