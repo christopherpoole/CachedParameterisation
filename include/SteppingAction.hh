@@ -42,12 +42,13 @@ class SteppingAction : public G4UserSteppingAction
 
     virtual void UserSteppingAction(const G4Step* step);
 
-    void SetVerbosity(bool verbose) {
+    void SetVerbosity(G4int verbose) {
         this->verbose = verbose;
     };
 
   public:
-    bool verbose;
+    G4int verbose;
+    G4ThreeVector last_position;
 };
 
 

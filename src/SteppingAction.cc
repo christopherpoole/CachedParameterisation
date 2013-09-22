@@ -43,6 +43,8 @@
 
 SteppingAction::SteppingAction()
 {
+    verbose = 0;
+    last_position = G4ThreeVector();
 }
 
 SteppingAction::~SteppingAction()
@@ -56,11 +58,17 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     
     G4ThreeVector current_position = step->GetPostStepPoint()->GetPosition();
     
-    if (verbose)
-        G4cout << G4endl << "SteppingAction::UserSteppingAction"
-                         << current_position << G4endl;
-    
+    if (verbose >= 1) {
+        double length = (last_position - current_position).mag();
+
+        G4cout << G4endl << "SteppingAction::UserSteppingAction at "
+                         << current_position << " -> " << length << "mm" << G4endl;
+        
+        last_position = current_position;
+    }
+
     bool update = detector_construction->UpdateParameterisation(current_position);
     
+    usleep(50000);
 }
 
