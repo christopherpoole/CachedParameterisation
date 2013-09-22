@@ -62,6 +62,7 @@ DetectorConstruction::DetectorConstruction()
 
 DetectorConstruction::~DetectorConstruction()
 {
+    delete parameterisation;
     delete messenger;
 }
 

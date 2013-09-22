@@ -40,6 +40,7 @@
 // USER //
 #include "Helpers.hh"
 #include "Neighbourhood.hh"
+#include "Timer.hh"
 
 
 class CachedParameterisation : public G4VPVParameterisation{
@@ -85,6 +86,11 @@ class CachedParameterisation : public G4VPVParameterisation{
     std::vector<double> y;
     std::vector<double> z;
     std::vector<double> r;
+
+    // Timing Histograms
+    TimingHistogram* th_outside_of_current_region;
+    TimingHistogram* th_compute_transform;
+    TimingHistogram* th_compute_neighbors;
 };
 
 #endif // CACHEDPARAMETERISATOIN_H

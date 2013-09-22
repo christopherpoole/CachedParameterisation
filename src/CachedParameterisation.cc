@@ -32,6 +32,11 @@
 
 CachedParameterisation::CachedParameterisation(G4String filename, G4String dataset)
 {
+    // Timing histograms
+    this->th_outside_of_current_region = new TimingHistogram("outside of current region");
+    this->th_compute_transform = new TimingHistogram("compute transform");
+    this->th_compute_neighbors = new TimingHistogram("compute neighbors");
+
     this->do_transform = true;
     this->do_dimensions = false;
 
@@ -48,23 +53,33 @@ CachedParameterisation::CachedParameterisation(CachedParameterisation& other)
     r = std::vector<double>(other.r);
 
     neighbourhood = other.neighbourhood;
+    th_outside_of_current_region = other.th_outside_of_current_region;
+    th_compute_transform = other.th_compute_transform;
+    th_compute_neighbors = other.th_compute_neighbors;
 }
 
 
 CachedParameterisation::~CachedParameterisation()
 {
+    th_outside_of_current_region->dump("output/outside.txt");
+    th_compute_transform->dump("output/transform.txt");
+    th_compute_neighbors->dump("output/neighbors.txt");
 }
 
 
 void CachedParameterisation::ComputeTransformation(const G4int copy_number,
         G4VPhysicalVolume* physical_volume) const
 {
+    th_compute_transform->start();
+
     G4double x = this->x[copy_number];
     G4double y = this->y[copy_number];
     G4double z = this->z[copy_number];
     
     G4ThreeVector origin = G4ThreeVector(x, y, z);
     physical_volume->SetTranslation(origin);
+
+    th_compute_transform->stop();
 }
 
 
@@ -75,17 +90,25 @@ G4Material* CachedParameterisation::ComputeMaterial(G4VPhysicalVolume *physical_
 
 bool CachedParameterisation::OutsideOfCurrentRegion(G4ThreeVector position) {
     if (this->x.size() > 0) { 
-        return neighbourhood->OutsideOfCurrentRegion(position);
+        th_outside_of_current_region->start();
+        bool outside = neighbourhood->OutsideOfCurrentRegion(position);
+        th_outside_of_current_region->stop();
+
+        return outside;
     }
     return true;
 }
 
 void CachedParameterisation::ComputeNeighbors(G4ThreeVector position, G4int number) {
+    th_compute_neighbors->start();
+
     Visitor visitor = neighbourhood->ComputeNeighbours(position, number);
     this->x = visitor.x;
     this->y = visitor.y;
     this->z = visitor.z;
 
     this->size = x.size();
+
+    th_compute_neighbors->stop();
 };
 
