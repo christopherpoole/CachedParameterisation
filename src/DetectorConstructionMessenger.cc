@@ -29,6 +29,7 @@
 // USER //
 #include "DetectorConstructionMessenger.hh"
 #include "DetectorConstruction.hh"
+#include "SteppingAction.hh"
 
 // GEANT4 //
 #include "G4UIdirectory.hh"
@@ -36,6 +37,7 @@
 #include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithAnInteger.hh"
 #include "G4UIcmdWithAString.hh"
+#include "G4EventManager.hh"
 
 
 DetectorConstructionMessenger::DetectorConstructionMessenger(DetectorConstruction* det)
@@ -127,8 +129,11 @@ void DetectorConstructionMessenger::SetNewValue(G4UIcommand* command, G4String v
     if (command == set_limit)
         detector_construction->SetLimit(set_limit->GetNewDoubleValue(value));
 
-    if (command == set_verbosity) 
+    if (command == set_verbosity) { 
         detector_construction->SetVerbosity(set_verbosity->GetNewIntValue(value));
+        ((SteppingAction*) G4EventManager::GetEventManager()->GetUserSteppingAction())
+            ->SetVerbosity(set_verbosity->GetNewIntValue(value));
+    }
 
     if (command == dump_cache)
         detector_construction->parameterisation_cache->dump();
