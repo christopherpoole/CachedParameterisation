@@ -79,6 +79,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
+    world_logical->SetVisAttributes(G4Colour(1, 1, 1, 0));
     world_logical->SetSmartless(smartless);
 
     // User Limits
