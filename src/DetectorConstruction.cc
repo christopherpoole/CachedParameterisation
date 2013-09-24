@@ -25,11 +25,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////
 
-
+// STL //
 #include <iostream>
 
 // USER //
 #include "DetectorConstruction.hh"
+#include "SensitiveDetector.hh"
 
 // GEANT4 //
 #include "globals.hh"
@@ -97,6 +98,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // Set to 0 here, as it will be updated
     // in the stepping action.
     //replication->SetNoReplicas(count);    
+
+    SensitiveDetector* sensitive_detector = new SensitiveDetector("sd");
+
+    G4SDManager* sensitive_detector_manager = G4SDManager::GetSDMpointer();
+    sensitive_detector_manager->AddNewDetector(sensitive_detector);
+    sphere_logical->SetSensitiveDetector(sensitive_detector);
+    //world_logical->SetSensitiveDetector(sensitive_detector);
 
     return world_physical;
 }
