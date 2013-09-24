@@ -75,7 +75,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4Material* water = nist_manager->FindOrBuildMaterial("G4_WATER");
 
     world_solid = new G4Box("world_solid", 2*cm, 2*cm, 2*cm);
-    world_logical = new G4LogicalVolume(world_solid, air, "world_logical", 0, 0, 0);
+    world_logical = new G4LogicalVolume(world_solid, water, "world_logical", 0, 0, 0);
     world_physical = new G4PVPlacement(0, G4ThreeVector(), world_logical,
             "world_physical", 0, false, 0);
     //world_logical->SetVisAttributes(G4VisAttributes::Invisible);
@@ -87,9 +87,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     parameterisation = new CachedParameterisation(filename, dataset);
 
-    G4Orb* sphere_solid = new G4Orb("sphere", .1*mm);
+    G4Orb* sphere_solid = new G4Orb("sphere", 1.0*mm);
     G4LogicalVolume* sphere_logical =
-        new G4LogicalVolume(sphere_solid, air, "sphere", 0, 0, 0);
+        new G4LogicalVolume(sphere_solid, water, "sphere", 0, 0, 0);
 
     replication = new G4PVParameterised("CachedParam",
             sphere_logical, world_logical, kUndefined,
