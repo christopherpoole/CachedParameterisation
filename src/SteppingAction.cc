@@ -61,13 +61,13 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     if (verbose >= 1) {
         double length = (last_position - current_position).mag();
 
-        G4cout << G4endl << "SteppingAction::UserSteppingAction at "
-                         << current_position << " -> " << length << "mm" << G4endl;
+        G4cout << "SteppingAction::UserSteppingAction at "
+               << current_position << " -> " << length << "mm" << G4endl << G4endl;
         
         last_position = current_position;
     }
 
-    bool update = detector_construction->UpdateParameterisation(current_position);
+    bool update = detector_construction->UpdateParameterisation(current_position, false);
     
     usleep(50000);
 }

@@ -43,14 +43,16 @@
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
+    verbose = true;
+
     particle_gun = new G4ParticleGun();
 
     G4ParticleTable* particle_table = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition* particle = particle_table->FindParticle("gamma");
+    G4ParticleDefinition* particle = particle_table->FindParticle("e-");
   
     particle_gun->SetParticleDefinition(particle);
     particle_gun->SetParticlePosition(G4ThreeVector());
-    particle_gun->SetParticleEnergy(1.*MeV);
+    //particle_gun->SetParticleEnergy(1.*MeV);
 
     detector_construction = (DetectorConstruction*) (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 }
@@ -62,14 +64,17 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
-    if (verbose)
-        G4cout << G4endl << "PrimaryGeneratorAction::GeneratePrimaries "
-                         << event->GetEventID() << G4endl;
-
     particle_gun->SetParticleMomentumDirection(
             G4ThreeVector(G4UniformRand(), G4UniformRand(), G4UniformRand()));
 
-    detector_construction->UpdateParameterisation(particle_gun->GetParticlePosition());
+    G4cout << "Seed parameterisation given primary generator position: "
+           << particle_gun->GetParticlePosition() << G4endl;
+
+    detector_construction->UpdateParameterisation(particle_gun->GetParticlePosition(), true);
+
+    if (verbose)
+        G4cout << "PrimaryGeneratorAction::GeneratePrimaries "
+               << event->GetEventID() << G4endl;
 
     particle_gun->GeneratePrimaryVertex(event);
 }

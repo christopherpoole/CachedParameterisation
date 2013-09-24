@@ -111,10 +111,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 }
 
 
-bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position)
+bool DetectorConstruction::UpdateParameterisation(G4ThreeVector position, bool force)
 {
     bool update;
-    bool outside = parameterisation->OutsideOfCurrentRegion(position);
+    bool outside;
+   
+    if (force) {
+        outside = true;
+    } else {
+        outside = parameterisation->OutsideOfCurrentRegion(position);
+    }
    
     if (outside) {
         if (verbose >= 2)

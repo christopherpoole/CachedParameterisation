@@ -53,7 +53,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     ~DetectorConstruction();
 
     G4VPhysicalVolume* Construct();
-    bool UpdateParameterisation(G4ThreeVector position);
+    bool UpdateParameterisation(G4ThreeVector position, bool force);
 
   public:
     void SetFilename(G4String filename) {
